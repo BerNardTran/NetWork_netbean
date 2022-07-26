@@ -9,38 +9,41 @@ package Entity;
  * @author BerNard
  */
 public class Food {
-     private int foodId;
-        private String foodName;
-        private float foodCost;
 
-        public Food(){}
-        public Food(int foodId, String foodName, float foodCost) {
-                this.foodId = foodId;
-                this.foodName = foodName;
-                this.foodCost = foodCost;
-        }
+    private int foodId;
+    private String foodName;
+    private float foodCost;
 
-        public int getFoodId() {
-                return foodId;
-        }
+    public Food() {
+    }
 
-        public String getFoodName() {
-                return foodName;
-        }
+    public Food(int foodId, String foodName, float foodCost) {
+        this.foodId = foodId;
+        this.foodName = foodName;
+        this.foodCost = foodCost;
+    }
 
-        public float getFoodCost() {
-                return foodCost;
-        }
+    public int getFoodId() {
+        return foodId;
+    }
 
-        public void setFoodId(int foodId) {
-                this.foodId = foodId;
-        }
+    public String getFoodName() {
+        return foodName;
+    }
 
-        public void setFoodName(String foodName) {
-                this.foodName = foodName;
-        }
+    public float getFoodCost() {
+        return foodCost;
+    }
 
-        public void setFoodCost(float foodCost) {
-                this.foodCost = foodCost;
-        }
+    public void setFoodId(int foodId) {
+        this.foodId = foodId;
+    }
+
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
+    }
+
+    public void setFoodCost(float foodCost) {
+        this.foodCost = foodCost;
+    }
 }
