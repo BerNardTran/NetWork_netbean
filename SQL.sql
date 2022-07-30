@@ -18,13 +18,15 @@ create table [User](
 create table Food(
 	foodId int identity(1, 1) primary key,
 	foodName varchar(50),
+	foodDescription varchar(max),
 	foodCost float,
-	--foodUrlIMG varchar(max)
+	foodUrlIMG varchar(max)
 )
 
 create table [Order](
 	orderId int identity(1, 1) primary key,
-	totalMoney float
+	totalMoney float,
+	userId int,
 )
 
 create table FoodOrder(
@@ -33,12 +35,8 @@ create table FoodOrder(
 	orderId int,
 	quantity int
 )
-
-create table UserOrder(
-	userOrderId int identity(1, 1) primary key,
-	userId int,
-	orderId int
-)
+alter table [order]
+add foreign key (userId) references [user](userId)
 
 alter table FoodOrder
 add foreign key (foodId) references Food(foodId)
@@ -46,18 +44,11 @@ add foreign key (foodId) references Food(foodId)
 alter table FoodOrder
 add foreign key (orderId) references [Order](orderId)
 
-alter table UserOrder
-add foreign key (userId) references [User](userId)
-
-alter table UserOrder
-add foreign key (orderId) references [Order](orderId)
-
-
 insert into Food
 values 
-	('Fish', 100000),
-	('Meat', 150000),
-	('Vegetable', 50000)
+	('Fish','Is a fish' ,100000, 'abc'),
+	('Meat', 'Is a meat of cow', 150000, 'abc'),
+	('Vegetable','Is the vegetables', 50000, 'abc')
 
 
 insert into [User]
@@ -67,8 +58,8 @@ values
 
 insert into [Order]
 values
-	(0),
-	(0)
+	(0,1),
+	(0,2)
 
 
 insert into FoodOrder
@@ -79,15 +70,12 @@ values
 	(1, 2, 10),
 	(3, 2, 5)
 
-insert into UserOrder
-values
-	(1, 2),
-	(2, 1)
 
 select * from [User];
 select * from [Order];
 select * from FoodOrder;
-select * from UserOrder;
+insert into FoodOrder values(1,2,1)
+
 select * from Food;
 
 
@@ -147,3 +135,7 @@ select * from [order]
 select * from FoodOrder 	
 --select * from Food
 
+--select foodName, foodCost, quantity from Food inner join FoodOrder on Food.foodId = FoodOrder.foodId
+
+go
+create trigger create_user_order_after_create_new_order on [order] after insert 

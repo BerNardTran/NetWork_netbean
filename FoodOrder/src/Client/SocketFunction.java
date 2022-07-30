@@ -14,12 +14,13 @@ import java.net.Socket;
  * @author ASUS
  */
 public class SocketFunction {
-        private Socket clientSocket;
+    private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
 
     public void startConnection(String ip, int port) throws IOException {
         clientSocket = new Socket(ip, port);
+
         out = new PrintWriter(clientSocket.getOutputStream(), true);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
@@ -28,5 +29,11 @@ public class SocketFunction {
         in.close();
         out.close();
         clientSocket.close();
+    }
+    
+    public void sendUserData(String name) {
+        String a = "checkedUserExist|" + name;
+        out.println(a);
+        out.flush();
     }
 }

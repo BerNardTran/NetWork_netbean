@@ -10,12 +10,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.*;
 /**
  *
  * @author ASUS
  */
 public class OrderHandler {
-     public static void ShowOrder(){
+    public static void ShowOrder(){
         Connection connection = null;
         connection = ConnectionDatabase.getConnection();
         PreparedStatement preparedStatement = null;
@@ -30,5 +31,18 @@ public class OrderHandler {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    public static void CreateOrder(){
+        Connection connection = null;
+        connection = ConnectionDatabase.getConnection();
+        String sqlQuery = "insert into [order] values(0 )";
+        try{
+            Statement statement = connection.createStatement();
+            statement.executeQuery(sqlQuery);
+        }catch(Exception  e){
+            System.out.println("Can't insert to database");
+        }
+        
     }
 }

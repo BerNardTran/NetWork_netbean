@@ -16,18 +16,18 @@ import java.util.ArrayList;
  * @author ASUS
  */
 public class FoodHandler {
-     public static void getAllFood(){
-        Connection connection = null;
-        connection = ConnectionDatabase.getConnection();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        try {
-            String sqlQuery = "select * from Food";
-            preparedStatement = connection.prepareStatement(sqlQuery);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                System.out.println("ID" + resultSet.getInt(1) + " | Name: " + resultSet.getString(2) + " | " + "cost: " + resultSet.getFloat(3));
-            }
+//     public static void getAllFood(){
+//        Connection connection = null;
+//        connection = ConnectionDatabase.getConnection();
+//        PreparedStatement preparedStatement = null;
+//        ResultSet resultSet = null;
+//        try {
+//            String sqlQuery = "select * from Food";
+//            preparedStatement = connection.prepareStatement(sqlQuery);
+//            resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                System.out.println("ID" + resultSet.getInt(1) + " | Name: " + resultSet.getString(2) + " | " + "cost: " + resultSet.getFloat(3));
+//            }
 //            String sql = "select * from LichSuDangNhap";
 //                    pre = conn.prepareStatement(sql);
 //                    rs = pre.executeQuery();
@@ -40,30 +40,30 @@ public class FoodHandler {
 //                        arr.add(rs.getString("quyenTruyCap"));
 //                        tableModel.addRow(arr);
 //                    }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 
     public static ArrayList getAllMenu()  {
         ArrayList<Food> listFood = new ArrayList<>();
-        Connection connection = null;
-        connection = ConnectionDatabase.getConnection();
-        Statement statement = null;
-        ResultSet resultSet = null;
+        Connection connection = ConnectionDatabase.getConnection();
+//        Statement statement = null;
+//        ResultSet resultSet = null;
 
         try{
             String sqlQuery = "select * from Food";
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sqlQuery);
-
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
 
             while (resultSet.next()){
                 Food food = new Food();
                 food.setFoodId(resultSet.getInt(1));
                 food.setFoodName(resultSet.getString(2));
-                food.setFoodCost(resultSet.getFloat(3));
+                food.setFoodDescription(resultSet.getString(3));
+                food.setFoodCost(resultSet.getFloat(4));
+                food.setFoodUrlIMG(resultSet.getString(5));
                 listFood.add(food);
             }
         }catch (SQLException e){
@@ -72,9 +72,8 @@ public class FoodHandler {
         }
         return listFood;
     }
-
-
-    public static void showMenuFood(){
-
-    }
+    
+//    public static void main(String[]) args){
+//        FoodHandler.getAllMenu();
+//    }
 }

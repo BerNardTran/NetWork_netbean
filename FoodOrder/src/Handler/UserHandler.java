@@ -8,16 +8,18 @@ import Entity.User;
 import Server.ConnectionDatabase;
 
 import java.sql.*;
+
 /**
  *
  * @author ASUS
  */
 public class UserHandler {
-        public static void insertUserName(User user){
+
+    public static void insertUserName(User user) {
         Connection connection = null;
         connection = ConnectionDatabase.getConnection();
 
-        try{
+        try {
             String sqlQuery = "insert into [User] values ('" + user.getUserName() + "')";
 //            System.out.println(sqlQuery);
 //            preparedStatement = connection.prepareStatement(sqlQuery);
@@ -29,4 +31,6 @@ public class UserHandler {
             throw new RuntimeException(e);
         }
     }
+
+
 }

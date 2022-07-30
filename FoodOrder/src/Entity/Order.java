@@ -10,18 +10,30 @@ package Entity;
  */
 public class Order {
         private int orderId;
+        private int userId;
 
     public Order(){}
 
-    public Order(int orderId) {
+    public Order(int orderId, int userId) {
         this.orderId = orderId;
+        this.userId = userId;
     }
 
     public int getOrderId() {
         return orderId;
     }
 
+    public int getUserId() {
+        return userId;
+    }
+
     public void setOrderId(int orderId) {
         this.orderId = orderId;
     }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    
 }

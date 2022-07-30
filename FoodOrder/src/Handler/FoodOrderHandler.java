@@ -4,13 +4,16 @@
  */
 package Handler;
 
+import Entity.BuyProduct;
 import Entity.FoodOrder;
 import Server.ConnectionDatabase;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 /**
  *
  * @author ASUS
@@ -44,5 +47,27 @@ public class FoodOrderHandler {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    public static ArrayList getAllFoodOrder(){
+        ArrayList<BuyProduct> listFoodOrder = new ArrayList<>();
+        Connection connection = ConnectionDatabase.getConnection();
+        
+        try{
+            String sql = "select foodName, foodCost, quantity from Food inner join FoodOrder on Food.foodId = FoodOrder.foodId";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()){
+                BuyProduct buyProduct = new BuyProduct();
+                buyProduct.setName(resultSet.getString(1));
+                buyProduct.setCost(resultSet.getFloat(2));
+                buyProduct.setQuantity(resultSet.getInt(3));
+                listFoodOrder.add(buyProduct);
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+
+        }
+        return listFoodOrder;
     }
 }

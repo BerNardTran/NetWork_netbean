@@ -13,16 +13,35 @@ public class Food {
     private int foodId;
     private String foodName;
     private float foodCost;
+    private String foodDescription;
+    private String foodUrlIMG;
 
     public Food() {
     }
 
-    public Food(int foodId, String foodName, float foodCost) {
+    public Food(int foodId, String foodName, float foodCost, String foodDescription , String foodUrlIMG) {
         this.foodId = foodId;
         this.foodName = foodName;
         this.foodCost = foodCost;
+        this.foodDescription = foodDescription;
+        this.foodUrlIMG = foodUrlIMG;
     }
-
+    
+    public String getFoodDescription(){
+        return foodDescription;
+    }
+    
+    public void setFoodDescription(String foodDescription){
+        this.foodDescription = foodDescription;
+    }
+    
+   public void setFoodUrlIMG(String foodUrlIMG){
+       this.foodUrlIMG = foodUrlIMG;
+   }
+    public String getFoodUrlIMG(){
+        return foodUrlIMG;
+    }
+    
     public int getFoodId() {
         return foodId;
     }

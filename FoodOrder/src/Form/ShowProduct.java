@@ -4,6 +4,11 @@
  */
 package Form;
 
+import Entity.BuyProduct;
+import Entity.Food;
+import Handler.FoodHandler;
+import Handler.FoodOrderHandler;
+import Server.ConnectionDatabase;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
 import java.io.IOException;
@@ -24,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
+
 /**
  *
  * @author ranco
@@ -35,10 +41,11 @@ public class ShowProduct extends javax.swing.JFrame {
      * @param ID
      * @throws java.io.IOException
      */
-    public ShowProduct(String ID) throws IOException {
-        this.id = ID;
+    public ShowProduct(){
         initComponents();
-        populateJTable(new QueryForProduct().BindTable(user, pass));
+        show_menu();
+        show_buy_product();
+//        populateJTable(new QueryForProduct().BindTable(user, pass));
     }
 
     /**
@@ -65,18 +72,18 @@ public class ShowProduct extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         AddBtn = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        ProductTable2 = new javax.swing.JTable();
+        FoodOrderTable = new javax.swing.JTable();
         allPaymentVar = new javax.swing.JLabel();
         clearBillBtn = new javax.swing.JButton();
         confirmBtn = new javax.swing.JButton();
-        quanVar2 = new javax.swing.JSpinner();
+        quantityVar = new javax.swing.JSpinner();
         cardVar = new javax.swing.JRadioButton();
         cashVar = new javax.swing.JRadioButton();
         idVar = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
+        welcomeUser = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -93,11 +100,11 @@ public class ShowProduct extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Name", "Description", "Price", "NoInventory", "Image"
+                "Id", "Name", "Description", "Price", "Image"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -170,16 +177,16 @@ public class ShowProduct extends javax.swing.JFrame {
             }
         });
 
-        ProductTable2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        ProductTable2.setModel(new javax.swing.table.DefaultTableModel(
+        FoodOrderTable.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        FoodOrderTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "PRODUCT", "PRICE", "QUANTITY", "TOTAL"
+                "PRODUCT", "PRICE", "QUANTITY"
             }
         ));
-        jScrollPane4.setViewportView(ProductTable2);
+        jScrollPane4.setViewportView(FoodOrderTable);
 
         allPaymentVar.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         allPaymentVar.setForeground(new java.awt.Color(153, 153, 255));
@@ -202,7 +209,12 @@ public class ShowProduct extends javax.swing.JFrame {
             }
         });
 
-        quanVar2.setModel(new javax.swing.SpinnerNumberModel());
+        quantityVar.setModel(new javax.swing.SpinnerNumberModel());
+        quantityVar.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                quantityVarStateChanged(evt);
+            }
+        });
 
         buttonGroup1.add(cardVar);
         cardVar.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -272,7 +284,7 @@ public class ShowProduct extends javax.swing.JFrame {
                                         .addComponent(jLabel3)
                                         .addComponent(priceVar, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel8)
-                                        .addComponent(quanVar2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(quantityVar, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(99, 99, 99)
                                 .addComponent(AddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -303,7 +315,7 @@ public class ShowProduct extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(quanVar2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(quantityVar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(AddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -319,7 +331,7 @@ public class ShowProduct extends javax.swing.JFrame {
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(67, 67, 67))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(90, 90, 90)
+                        .addGap(93, 93, 93)
                         .addComponent(allPaymentVar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(28, 28, 28)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,9 +359,16 @@ public class ShowProduct extends javax.swing.JFrame {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Back");
 
-        jLabel11.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Welcome .. to our restaurant");
+        welcomeUser.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        welcomeUser.setForeground(new java.awt.Color(255, 255, 255));
+        welcomeUser.setText("Welcome .. to our restaurant");
+        welcomeUser.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                welcomeUserInputMethodTextChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -357,7 +376,7 @@ public class ShowProduct extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(321, 321, 321)
-                .addComponent(jLabel11)
+                .addComponent(welcomeUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9)
                 .addContainerGap())
@@ -378,7 +397,7 @@ public class ShowProduct extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jLabel11))
+                    .addComponent(welcomeUser))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
@@ -412,276 +431,140 @@ public class ShowProduct extends javax.swing.JFrame {
 
     private void cashVarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashVarActionPerformed
         // TODO add your handling code here:
-        if (cashVar.isSelected() == true){
-            cashAndCard = true;
-        }
+        // confirm pay to cash
+//        if (cashVar.isSelected() == true){
+//            cashAndCard = true;
+//        }
     }//GEN-LAST:event_cashVarActionPerformed
-    private String getReceiptID() throws SQLException{
-        Con = JDBCConnection.getConnection(user, pass);
-        Con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-        CallableStatement cstmt = Con.prepareCall("{? = call AUTO_ReceiptID()}");
-        cstmt.registerOutParameter(1, Types.CHAR);
-        cstmt.execute();
-        return cstmt.getString(1);
-    }
+//    private String getReceiptID() throws SQLException{
+//        
+//    }
     private void confirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmBtnMouseClicked
-
-        try{                                        
-            String CustomerID = this.id;
-            Receipt receipt = new Receipt(getReceiptID(), CustomerID, feeDelivery, cashAndCard, ListProd);
-            Con = JDBCConnection.getConnection(user, pass);
-            Con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            String sql0 = "INSERT INTO RECEIPT (ReceiptID,CustomerID,OrderDate,DeliveryCharges,PaymentMethod) VALUES(?, ?, GETDATE(), ?, ?)";
-            String sql1 = "INSERT INTO RECEIPT_DETAIL (ReceiptID,ProductID,Quantity,Price) VALUES(?,?,?,?)";
-            PreparedStatement ps0 = null;
-            PreparedStatement ps1 = null;
-            
-            try{
-                Con.setAutoCommit(false);
-                ps0 = Con.prepareStatement(sql0);
-                ps0.setString(1,receipt.getReceiptID());
-                ps0.setString(2,receipt.getCustomerID());
-                ps0.setInt(3,receipt.getDeliveryCharges());
-                ps0.setBoolean(4, cashAndCard);
-                ps0.execute();
-                
-                ps1 = Con.prepareStatement(sql1);
-                for(Receipt_Detail i : receipt.getList()){
-                    System.out.println(i);
-                    ps1.setString(1,receipt.getReceiptID());
-                    ps1.setString(2,i.getProdId());
-                    ps1.setInt(3,i.getQty());
-                    ps1.setInt(4,i.getPrice());
-                    ps1.execute();
-                }                             
-                Con.commit();
-                JOptionPane.showMessageDialog(this, "Purchase successfully !!!");  
-                clearBillBtn.doClick();
-            }catch(Exception e){
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Purchase failed !!!");  
-                Con.rollback();
-            }finally{
-                    Con.setAutoCommit(true);
-                    Con.close();                    
-            }
-        }catch(SQLException ex){
-            Logger.getLogger(ShowProduct.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //show a dialog or notification
+//        Connection connection = ConnectionDatabase.getConnection();
+        
+        
     }//GEN-LAST:event_confirmBtnMouseClicked
 
     private void clearBillBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearBillBtnMouseClicked
         // TODO add your handling code here:
-        ProdTotal = 0;
-        smallTotal = 0;
-        bigTotal = 0;
-        numberOfProduct = 0;
 
-        billVar.setText("Your bill: " + smallTotal + " vnđ");
-        paymentVar.setText("Your fee: " + 0 + " vnđ");
-        allPaymentVar.setText("All your payment is:" + bigTotal + " vnđ");
-
-        String[]columnName = {"PRODUCT","PRICE","QUANTITY","TOTAL"};
-        DefaultTableModel model = (DefaultTableModel)ProductTable2.getModel();
-        model.setRowCount(0);
-        ProductTable2.getColumnModel().getColumn(0).setPreferredWidth(65);
-        ProductTable2.getColumnModel().getColumn(1).setPreferredWidth(10);
-        ProductTable2.getColumnModel().getColumn(2).setPreferredWidth(10);
-        ProductTable2.getColumnModel().getColumn(3).setPreferredWidth(10);
-        ListProd.clear();
     }//GEN-LAST:event_clearBillBtnMouseClicked
-
+    
     private void AddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddBtnMouseClicked
         // TODO add your handling code here:
-        int Uprice = Integer.parseInt(priceVar.getText());        
-        if(nameVar.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "You're not chossing product !!!");
-        }else if((Integer)quanVar2.getValue() <= 0 ){
-            JOptionPane.showMessageDialog(this, "Please take one or more product !!!");
-        } else {
-            numberOfProduct++;
-            ProdTotal = Uprice * (Integer)quanVar2.getValue();
-            smallTotal = ProdTotal + smallTotal;
-            bigTotal = smallTotal + (smallTotal / 100 )* 10;
+        String nameFood = nameVar.getText();
+        String priceFood = priceVar.getText();
+        String quantity = quantityVar.getValue().toString();
+        System.out.println("quantity: " + quantity);
+//        String quanVar = quantityVar.getText();
+        System.out.println("name: " + nameFood + " | price: " + priceFood + " | quantity: " + quantity);
+//        System.out.println("name: " +  name);
 
-            billVar.setText("Your bill: " + smallTotal + " vnđ");
-            if ((smallTotal / 100 )* 10 < 12000){
-                feeDelivery = 12000;
-                paymentVar.setText("Shipping fee: 12000 vnđ");
-            } else if((smallTotal / 100 )* 10 > 47000){
-                feeDelivery = 47000;
-                paymentVar.setText("Shipping fee: 47000 vnđ");
-            }else{
-                paymentVar.setText("Shipping fee: " + (smallTotal / 100 )* 10 + " vnđ");
-                feeDelivery = (smallTotal / 100 )* 10;
-            }
-            //        paymentVar.setText("Your fee: " + (smallTotal / 100 )* 7 + " vnđ");
-            allPaymentVar.setText("Total: " + bigTotal + " vnđ");
-
-            //        Object[] rows = new Object[5];
-            String[]columnName = {"PRODUCT","PRICE","QUANTITY","TOTAL"};
-            DefaultTableModel model = (DefaultTableModel)ProductTable2.getModel();
-            //        model.setColumnIdentifiers(columnName);
-            ProductTable2.getColumnModel().getColumn(0).setPreferredWidth(65);
-            ProductTable2.getColumnModel().getColumn(1).setPreferredWidth(10);
-            ProductTable2.getColumnModel().getColumn(2).setPreferredWidth(10);
-            ProductTable2.getColumnModel().getColumn(3).setPreferredWidth(10);
-
-            model.addRow(new Object[]{nameVar.getText(), Uprice,quanVar2.getValue(),ProdTotal});
-            ListProd.add(new Receipt_Detail(idVar.getText(),nameVar.getText(),(int)quanVar2.getValue(),Uprice));
-        }
+        
     }//GEN-LAST:event_AddBtnMouseClicked
 
     private void ProductTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProductTableMouseClicked
         // TODO add your handling code here:
         int Myindex = ProductTable.getSelectedRow();
-        idVar.setText(ProductTable.getValueAt(Myindex, 5).toString());
-        nameVar.setText(ProductTable.getValueAt(Myindex, 0).toString());
-        priceVar.setText(ProductTable.getValueAt(Myindex, 2).toString());
+//        nameVar.setText(ProductTable.getValueAt(Myindex, 5).toString());
+        nameVar.setText(ProductTable.getValueAt(Myindex, 1).toString());
+        priceVar.setText(ProductTable.getValueAt(Myindex, 3).toString());
+       
     }//GEN-LAST:event_ProductTableMouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jLabel9MouseClicked
-    private String getTypee(String type){
-        String res = null;
-        switch (type) {
-            case "Stationery":
-                res = "01";
-                break;
-            case "Electric Appliances":
-                res = "02";
-                break;
-            case "Kitchen Utensils & Appliances":
-                res = "03";
-                break;
-            case "Phone Accessories":
-                res = "04";
-                break;
-            case "Detergents":
-                res = "05";
-                break;
-            case "Beauty & Personal Care":
-                res = "06";
-                break;
-            case "Food":
-                res = "07";
-                break;
-            case "Beverage":
-                res = "08";
-                break;
-            default:
-                break;
-        }
-        return res;
-    }
+//    private String getTypee(String type){
+//        
+//    }
     private void cardVarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cardVarActionPerformed
 
     }//GEN-LAST:event_cardVarActionPerformed
 
     private void fillterBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fillterBoxItemStateChanged
-        try {
-            // TODO add your handling code here:
-            Con = JDBCConnection.getConnection(user, pass);
-            Con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-            PreparedStatement Ps = null;
-            String item = (String) evt.getItem();
-            ArrayList<ListOfProducts> list = new ArrayList<ListOfProducts>();
-            String sql1 = "EXEC pr_getProductByType ?";
-            String sql0 = "SELECT ProductID, ProductName, Unit, Price, NoInventory,Img FROM PRODUCT";
-            if (evt.getStateChange() == ItemEvent.SELECTED) {
-                System.out.println(item);
-                try{
-                    switch (item) {
-                        case "ALL":
-                        Ps = Con.prepareStatement(sql0);
-                        break;
-                        case "Lower 50k":
-                        Ps = Con.prepareStatement("select ProductID, ProductName, Unit, Price, NoInventory, Img from dbo.PRODUCT WHERE Price < 50000 Order by Price ASC");
-                        break;
-                        case "50k to 500k":
-                        Ps = Con.prepareStatement("select ProductID, ProductName, Unit, Price, NoInventory, Img from dbo.PRODUCT WHERE Price >= 50000 and Price <= 500000 Order by Price ASC");
-                        break;
-                        case "Higher 500k":
-                        Ps = Con.prepareStatement("select ProductID, ProductName, Unit, Price, NoInventory, Img from dbo.PRODUCT WHERE Price > 500000 Order by Price ASC");
-                        break;
-                        default:
-                        Ps = Con.prepareStatement(sql1);
-                        Ps.setString(1, getTypee(item));
-                        break;
-                    }
-                    Rs = Ps.executeQuery();
-                    while(Rs.next()){
-                        ListOfProducts p = new ListOfProducts(
-                            Rs.getString("ProductID"),
-                            Rs.getString("ProductName"),
-                            Rs.getString("Unit"),
-                            Rs.getInt("Price"),
-                            Rs.getInt("NoInventory"),
-                            Rs.getString("Img")
-                        );
-                        list.add(p);
-                    }
-                    populateJTable(list);
-                } catch (IOException | SQLException e){
-                    e.printStackTrace();
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ShowProduct.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }//GEN-LAST:event_fillterBoxItemStateChanged
 
     private void fillterBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillterBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_fillterBoxActionPerformed
 
+    private void quantityVarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_quantityVarStateChanged
+        // TODO add your handling code here:
+        String quantity = quantityVar.getValue().toString();
+        System.out.println("quantity: " + quantity);
+    }//GEN-LAST:event_quantityVarStateChanged
+
+    private void welcomeUserInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_welcomeUserInputMethodTextChanged
+        // TODO add your handling code here:
+//        welcomeUser.setText("Welcome " + );
+    }//GEN-LAST:event_welcomeUserInputMethodTextChanged
+
     private void clearTable(){
         ((DefaultTableModel)ProductTable.getModel()).setNumRows(0);
     }      
     
-    public void populateJTable (ArrayList<ListOfProducts> list) throws MalformedURLException, IOException {
-        String[]columnName = {"Name","Unit","Price","No Inventory","Image","ID"};
-        Object[][] rows = new Object [list.size()][6];
-        for (int i = 0; i < list.size (); i++) {
-            rows[i][0] = list.get(i).getProductName();
-            rows[i][1] = list.get(i).getUnit();
-            rows[i][2] = list.get(i).getPrice();
-            rows[i][3] = list.get(i).getNoProd();
-            rows[i][5] = list.get(i).getProductID();
-            if(list.get(i).getImg() != null){
-                URL url = new URL(list.get(i).getImg());
-                Image image = ImageIO.read(url);
-                Image imagee = image.getScaledInstance(120, 120,  java.awt.Image.SCALE_SMOOTH);
-                ImageIcon picture = new ImageIcon(imagee);   
-                rows[i][4] = picture;
-            }
-            else{
-                rows[i][4] = null;
-            }
-        }
-        
-        TheModelProduct model = new TheModelProduct(rows, columnName);
-        ProductTable.setModel(model);
-        ProductTable.setRowHeight(120);
-        
-        DefaultTableCellRenderer rendar = new DefaultTableCellRenderer();
 
-        ProductTable.getColumnModel().getColumn(1).setCellRenderer(rendar); 
-        ProductTable.getColumnModel().getColumn(2).setCellRenderer(rendar); 
-        ProductTable.getColumnModel().getColumn(3).setCellRenderer(rendar); 
-        
-        ProductTable.getColumnModel().getColumn(5).setWidth(0);
-        ProductTable.getColumnModel().getColumn(5).setMinWidth(0);
-        ProductTable.getColumnModel().getColumn(5).setMaxWidth(0); 
-        ProductTable.getColumnModel().getColumn(0).setPreferredWidth(75);
-        ProductTable.getColumnModel().getColumn(1).setPreferredWidth(25);
-        ProductTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-        ProductTable.getColumnModel().getColumn(3).setPreferredWidth(30);
-        ProductTable.getColumnModel().getColumn(4).setPreferredWidth(120);
+    private void show_menu(){
+        ArrayList<Food> listFood = FoodHandler.getAllMenu();
+        DefaultTableModel model = (DefaultTableModel)ProductTable.getModel();
+        Object[] row = new Object[5];
+        for(int i = 0; i < listFood.size(); i++){
+            row[0] = listFood.get(i).getFoodId();
+            row[1] = listFood.get(i).getFoodName();
+            row[2] = listFood.get(i).getFoodDescription();
+            row[3] = listFood.get(i).getFoodCost();
+            row[4] = listFood.get(i).getFoodUrlIMG();
+            model.addRow(row);
+        }
     }
     
+    
+    private void show_buy_product(){
+        ArrayList<BuyProduct> listBuyProduct = FoodOrderHandler.getAllFoodOrder();
+        DefaultTableModel model = (DefaultTableModel)FoodOrderTable.getModel();
+        Object[] row = new Object[3];
+        for(int i = 0; i < listBuyProduct.size(); i++){
+            row[0] = listBuyProduct.get(i).getName();
+            row[1] = listBuyProduct.get(i).getCost();
+            row[2] = listBuyProduct.get(i).getQuantity();
+            model.addRow(row);
+        }
+    }
+     public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ShowProduct().setVisible(true);
+            }
+        });
+    }
     /**
      * @param args the command line arguments
      */
@@ -721,22 +604,11 @@ public class ShowProduct extends javax.swing.JFrame {
 //            }
 //        });   
 //    }
-    private Connection Con = null;
-    private ResultSet Rs = null;
-    private Statement St = null;
-    private String user = "KH", pass = "KH";
-    private int ProdTotal = 0;
-    private int bigTotal = 0;
-    private int smallTotal = 0;
-    private int numberOfProduct = 0;
-    private boolean cashAndCard = true;
-    private int feeDelivery = 0;
-    private String id;
-    private ArrayList<Receipt_Detail> ListProd = new ArrayList<Receipt_Detail>();
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddBtn;
+    private javax.swing.JTable FoodOrderTable;
     private javax.swing.JTable ProductTable;
-    private javax.swing.JTable ProductTable2;
     private javax.swing.JLabel allPaymentVar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton cardVar;
@@ -746,7 +618,6 @@ public class ShowProduct extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> fillterBox;
     private javax.swing.JTextField idVar;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -760,6 +631,7 @@ public class ShowProduct extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField nameVar;
     private javax.swing.JTextField priceVar;
-    private javax.swing.JSpinner quanVar2;
+    private javax.swing.JSpinner quantityVar;
+    private javax.swing.JLabel welcomeUser;
     // End of variables declaration//GEN-END:variables
 }

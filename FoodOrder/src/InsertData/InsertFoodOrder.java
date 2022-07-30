@@ -23,9 +23,6 @@ public class InsertFoodOrder {
         foodOrder.setFoodId(input.nextInt());
         foodOrder.setOrderId(input.nextInt());
         foodOrder.setQuantity(input.nextInt());
-        formatData.foodId = foodOrder.getFoodId();
-        formatData.orderId = foodOrder.getOrderId();
-        formatData.quantity = foodOrder.getQuantity();
         input.close();
         FoodOrderHandler.insertOrderFood(foodOrder);
     }

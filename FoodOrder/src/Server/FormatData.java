@@ -9,8 +9,6 @@ package Server;
  * @author ASUS
  */
 public class FormatData {
-        public String name;
-    public int foodId;
-    public int orderId;
-    public int quantity;
+    public String name;
+    public int userId;
 }

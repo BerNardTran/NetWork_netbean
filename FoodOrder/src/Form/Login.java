@@ -4,6 +4,14 @@
  */
 package Form;
 
+import Client.SocketFunction;
+import Const.PORT;
+import Entity.User;
+import Handler.UserHandler;
+import Server.FormatData;
+import java.io.IOException;
+//import com.google.gson.Gson;
+
 /**
  *
  * @author ranco
@@ -13,8 +21,16 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+    private SocketFunction socketFuntion = new SocketFunction();
+    private String userName = "";
     public Login() {
         initComponents();
+        try{
+            socketFuntion.startConnection("localhost", PORT.PORT);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+       
     }
 
     /**
@@ -31,16 +47,16 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        getName = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        LoginBtn = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(153, 153, 255));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Picture/newpng.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon("E:\\Java\\NetWork_netbean\\FoodOrder\\pictures\\newpng.png")); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -69,11 +85,11 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(153, 153, 255));
         jLabel2.setText("Name");
 
-        jTextField2.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(153, 153, 255));
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        getName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        getName.setForeground(new java.awt.Color(153, 153, 255));
+        getName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                getNameActionPerformed(evt);
             }
         });
 
@@ -81,13 +97,13 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(153, 153, 255));
         jLabel3.setText("LOGIN");
 
-        jButton1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(153, 153, 255));
-        jButton1.setText("LOGIN");
-        jButton1.setBorder(new javax.swing.border.MatteBorder(null));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        LoginBtn.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        LoginBtn.setForeground(new java.awt.Color(153, 153, 255));
+        LoginBtn.setText("LOGIN");
+        LoginBtn.setBorder(new javax.swing.border.MatteBorder(null));
+        LoginBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                LoginBtnActionPerformed(evt);
             }
         });
 
@@ -103,7 +119,7 @@ public class Login extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(getName, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(75, 75, 75)
@@ -116,7 +132,7 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addGap(125, 125, 125))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(LoginBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(92, 92, 92))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -128,10 +144,10 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addGap(65, 65, 65)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(getName, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(84, 84, 84)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(LoginBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -154,14 +170,41 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void getNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_getNameActionPerformed
+    
+    private void LoginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+        FormatData formatData = new FormatData();
+        //get name of client, then insert it to database
+        String userName = getName.getText();
+        User user = new User();
+        user.setUserName(userName);
+        formatData.name = userName;
+        socketFuntion.sendUserData(user.getUserName());
+//        UserHandler.insertUserName(user);
+        
+//        if(checkUserNameExist() == true){
+//            ShowProduct product = new ShowProduct();
+//            product.setVisible(true);
+//        }
+//        else{
+//            System.out.println("Don't have any account");
+//        }
+//        Gson gson = new Gson();
+//        String result = gson.toJson(formatData);
+//        System.out.println(">>>>> result: " + result);
+ 
+        
+    }//GEN-LAST:event_LoginBtnActionPerformed
+//    
+//    public boolean checkUserNameExist(){
+//       String name = getName.getText();
+//       boolean checked = UserHandler.checkedUserExist(name);
+//       System.out.println(checked);
+//       return checked;
+//    }
     /**
      * @param args the command line arguments
      */
@@ -198,7 +241,8 @@ public class Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton LoginBtn;
+    private javax.swing.JTextField getName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -206,6 +250,5 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
