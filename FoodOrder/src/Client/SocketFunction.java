@@ -31,9 +31,10 @@ public class SocketFunction {
         clientSocket.close();
     }
     
-    public void sendUserData(String name) {
+    public String sendUserData(String name) throws IOException {
         String a = "checkedUserExist|" + name;
         out.println(a);
         out.flush();
+        return in.readLine();
     }
 }

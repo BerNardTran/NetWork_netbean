@@ -57,27 +57,7 @@ public class Server {
             this.clientSocket = socket;
         }
 
-        public static int checkedUserExist(String userName) {
-            Connection connection = null;
-            connection = ConnectionDatabase.getConnection();
-            int userId = 0;
-            try {
-                String sqlQuery = "select * from [user] where userName = '" + userName + "';";
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(sqlQuery);
-
-                while (resultSet.next()) {
-                    if (userName.equals(resultSet.getString(2))) {
-                        userId = resultSet.getInt(1);
-                    }
-                }
-                System.out.println("username: " + userName + " | id: " + userId);
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-            return userId;
-        }
+        
 
         @Override
         public void run() {
@@ -98,15 +78,13 @@ public class Server {
 ////                System.out.println("CLIENT: " + formatData.name + ", " + formatData.foodId + ", " + formatData.orderId + ", " + formatData.quantity);
 //                System.out.println("CLIENT: " + formatData.name + " joined!");
                 String data = in.readLine();
-                String[] splitedData = data.split("|");
-                
-                String command = splitedData[0];
-                String commandData = splitedData[1];
-                System.out.println(splitedData);
+                int splitIndex = data.indexOf("|");
+                int dataLength = data.length();
+                String command = data.substring(0,splitIndex);
+                String commandData = data.substring(splitIndex+1,dataLength);
                 if("checkedUserExist".equals(command)){
                     String userName = commandData;
-                    int userid = checkedUserExist(userName);
-                    System.out.println("username: " + userName + " joined");
+                    int userid = UserHandle.checkedUserExist(userName);
                     out.println(userid);
                 }
                 

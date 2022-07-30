@@ -10,6 +10,8 @@ import Entity.User;
 import Handler.UserHandler;
 import Server.FormatData;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 //import com.google.gson.Gson;
 
 /**
@@ -182,7 +184,14 @@ public class Login extends javax.swing.JFrame {
         User user = new User();
         user.setUserName(userName);
         formatData.name = userName;
-        socketFuntion.sendUserData(user.getUserName());
+        try {
+            String userIdString = socketFuntion.sendUserData(userName);
+            int userId = Integer.valueOf(userIdString);
+            System.out.println(userIdString);
+            if (userId != 0) {
+                ShowProduct product = new ShowProduct();
+                product.setVisible(true);
+            }
 //        UserHandler.insertUserName(user);
         
 //        if(checkUserNameExist() == true){
@@ -195,6 +204,9 @@ public class Login extends javax.swing.JFrame {
 //        Gson gson = new Gson();
 //        String result = gson.toJson(formatData);
 //        System.out.println(">>>>> result: " + result);
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
  
         
     }//GEN-LAST:event_LoginBtnActionPerformed
