@@ -25,14 +25,15 @@ public class Login extends javax.swing.JFrame {
      */
     private SocketFunction socketFuntion = new SocketFunction();
     private String userName = "";
+
     public Login() {
         initComponents();
-        try{
+        try {
             socketFuntion.startConnection("localhost", PORT.PORT);
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
-       
+
     }
 
     /**
@@ -175,7 +176,7 @@ public class Login extends javax.swing.JFrame {
     private void getNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_getNameActionPerformed
-    
+
     private void LoginBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginBtnActionPerformed
         // TODO add your handling code here:
         FormatData formatData = new FormatData();
@@ -185,15 +186,19 @@ public class Login extends javax.swing.JFrame {
         user.setUserName(userName);
         formatData.name = userName;
         try {
-            String userIdString = socketFuntion.sendUserData(userName);
+            String response = socketFuntion.sendUserData(userName);
+            int splitIndex = response.indexOf("|");
+            int dataLength = response.length();
+            String userIdString = response.substring(0, splitIndex);
+            String orderIdString = response.substring(splitIndex + 1, dataLength);
             int userId = Integer.valueOf(userIdString);
-            System.out.println(userIdString);
-            if (userId != 0) {
+            int orderId = Integer.valueOf(orderIdString);
+            if (userId != 0 && orderId != 0) {
                 ShowProduct product = new ShowProduct();
                 product.setVisible(true);
             }
 //        UserHandler.insertUserName(user);
-        
+
 //        if(checkUserNameExist() == true){
 //            ShowProduct product = new ShowProduct();
 //            product.setVisible(true);
@@ -207,8 +212,8 @@ public class Login extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
- 
-        
+
+
     }//GEN-LAST:event_LoginBtnActionPerformed
 //    
 //    public boolean checkUserNameExist(){
@@ -217,6 +222,7 @@ public class Login extends javax.swing.JFrame {
 //       System.out.println(checked);
 //       return checked;
 //    }
+
     /**
      * @param args the command line arguments
      */

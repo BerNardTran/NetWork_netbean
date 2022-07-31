@@ -82,14 +82,17 @@ public class Server {
                 int dataLength = data.length();
                 String command = data.substring(0,splitIndex);
                 String commandData = data.substring(splitIndex+1,dataLength);
+                String response = "";
                 if("checkedUserExist".equals(command)){
                     String userName = commandData;
                     int userid = UserHandle.checkedUserExist(userName);
+                    int orderId = 0;
                     if (userid != 0) {
 //                        OrderHandle.CreateOrder(userid);
-                        System.out.println(OrderHandle.GetOrder(userid));
+                        orderId = OrderHandle.GetOrder(userid);
                     }
-                    out.println(userid);
+                    response = userid + "|" + orderId;
+                    out.println(response);
                 }
                 
 
