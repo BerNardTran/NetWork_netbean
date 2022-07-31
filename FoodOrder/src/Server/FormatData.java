@@ -11,4 +11,5 @@ package Server;
 public class FormatData {
     public String name;
     public int userId;
+    public int orderId;
 }

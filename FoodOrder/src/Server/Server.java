@@ -88,7 +88,7 @@ public class Server {
                     int userid = UserHandle.checkedUserExist(userName);
                     int orderId = 0;
                     if (userid != 0) {
-//                        OrderHandle.CreateOrder(userid);
+                        OrderHandle.CreateOrder(userid);
                         orderId = OrderHandle.GetOrder(userid);
                     }
                     response = userid + "|" + orderId;

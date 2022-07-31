@@ -8,9 +8,12 @@ import Entity.BuyProduct;
 import Entity.Food;
 import Handler.FoodHandler;
 import Handler.FoodOrderHandler;
+import Handler.OrderHandler;
 import Server.ConnectionDatabase;
+import Server.FormatData;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -41,8 +44,12 @@ public class ShowProduct extends javax.swing.JFrame {
      * @param ID
      * @throws java.io.IOException
      */
-    public ShowProduct(){
+    private int orderId;
+
+    public ShowProduct(int orderId){
+        this.orderId = orderId;
         initComponents();
+        System.out.println("utyt" + orderId);
         show_menu();
 //        show_buy_product();
 //        populateJTable(new QueryForProduct().BindTable(user, pass));
@@ -455,13 +462,18 @@ public class ShowProduct extends javax.swing.JFrame {
         // TODO add your handling code here:
         String nameFood = nameVar.getText();
         String priceFood = priceVar.getText();
-        String quantity = quantityVar.getValue().toString();
-        System.out.println("quantity: " + quantity);
+        String quantityStr = quantityVar.getValue().toString();
+        System.out.println("quantity: " + quantityStr);
 //        String quanVar = quantityVar.getText();
-        System.out.println("name: " + nameFood + " | price: " + priceFood + " | quantity: " + quantity);
+        System.out.println("name: " + nameFood + " | price: " + priceFood + " | quantity: " + quantityStr);
 //        System.out.println("name: " +  name);
-
-        
+        FormatData formatData = new FormatData();
+               
+//        int orderId = formatData.orderId;
+        int foodId = OrderHandler.getFoodIdByName(nameFood);
+        int quantity = (int)quantityVar.getValue();
+        System.out.println("orderId: " + this.orderId + ", foodId: " + foodId + ", quantity: " + quantity);
+        OrderHandler.insertOneProduct(foodId, orderId, quantity);
     }//GEN-LAST:event_AddBtnMouseClicked
 
     private void ProductTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProductTableMouseClicked
@@ -559,10 +571,8 @@ public class ShowProduct extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ShowProduct().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+//            new ShowProduct().setVisible(true);
         });
     }
     /**

@@ -9,7 +9,10 @@ import Const.PORT;
 import Entity.User;
 import Handler.UserHandler;
 import Server.FormatData;
+import com.google.gson.Gson;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 //import com.google.gson.Gson;
@@ -25,7 +28,8 @@ public class Login extends javax.swing.JFrame {
      */
     private SocketFunction socketFuntion = new SocketFunction();
     private String userName = "";
-
+    private PrintWriter out;
+//    private BufferedReader in;
     public Login() {
         initComponents();
         try {
@@ -185,6 +189,8 @@ public class Login extends javax.swing.JFrame {
         User user = new User();
         user.setUserName(userName);
         formatData.name = userName;
+       
+        Gson gson = new Gson();
         try {
             String response = socketFuntion.sendUserData(userName);
             int splitIndex = response.indexOf("|");
@@ -193,8 +199,11 @@ public class Login extends javax.swing.JFrame {
             String orderIdString = response.substring(splitIndex + 1, dataLength);
             int userId = Integer.valueOf(userIdString);
             int orderId = Integer.valueOf(orderIdString);
+            formatData.orderId = orderId;
+            formatData.userId = userId;
+            System.out.println("orderId of login " + orderId + " || userId : " + userId);
             if (userId != 0 && orderId != 0) {
-                ShowProduct product = new ShowProduct();
+                ShowProduct product = new ShowProduct(orderId);
                 product.setVisible(true);
             }
 //        UserHandler.insertUserName(user);
@@ -213,7 +222,9 @@ public class Login extends javax.swing.JFrame {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
+        String result = gson.toJson(formatData);
+        System.out.println(">>>> result login: " + result);
+//        out.println(result);
     }//GEN-LAST:event_LoginBtnActionPerformed
 //    
 //    public boolean checkUserNameExist(){
@@ -251,10 +262,8 @@ public class Login extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Login().setVisible(true);
         });
     }
 
