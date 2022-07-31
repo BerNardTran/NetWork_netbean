@@ -44,7 +44,7 @@ public class ShowProduct extends javax.swing.JFrame {
     public ShowProduct(){
         initComponents();
         show_menu();
-        show_buy_product();
+//        show_buy_product();
 //        populateJTable(new QueryForProduct().BindTable(user, pass));
     }
 

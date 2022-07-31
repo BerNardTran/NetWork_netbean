@@ -33,10 +33,10 @@ public class OrderHandler {
         }
     }
     
-    public static void CreateOrder(){
+    public static void CreateOrder(int userId){
         Connection connection = null;
         connection = ConnectionDatabase.getConnection();
-        String sqlQuery = "insert into [order] values(0 )";
+        String sqlQuery = "insert into [order] values(0,'"+userId+"')";
         try{
             Statement statement = connection.createStatement();
             statement.executeQuery(sqlQuery);
@@ -44,5 +44,11 @@ public class OrderHandler {
             System.out.println("Can't insert to database");
         }
         
+    }
+    
+    public static void GetOrder(int userId) {
+        Connection connection = null;
+        connection = ConnectionDatabase.getConnection();
+        String sqlQuery = "  select top(1) * from [Order] where userId = '" +userId+"'";
     }
 }

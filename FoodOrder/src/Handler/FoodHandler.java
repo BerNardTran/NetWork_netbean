@@ -54,9 +54,10 @@ public class FoodHandler {
 
         try{
             String sqlQuery = "select * from Food";
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sqlQuery);
-
+            System.out.println(sqlQuery);
+            PreparedStatement  statement = connection.prepareStatement(sqlQuery);
+            ResultSet resultSet = statement.executeQuery();
+             
             while (resultSet.next()){
                 Food food = new Food();
                 food.setFoodId(resultSet.getInt(1));

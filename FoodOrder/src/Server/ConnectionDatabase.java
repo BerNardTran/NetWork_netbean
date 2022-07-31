@@ -4,14 +4,15 @@
  */
 package Server;
 //import java.sql.*;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 /**
  *
  * @author ASUS
  */
-
 
 public class ConnectionDatabase {
 //    private static String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=FoodOrder;encrypt=true;trustServerCertificate=true;";
@@ -30,15 +31,15 @@ public class ConnectionDatabase {
 //        }
 //        return null;
 //    }
-        public static Connection getConnection(){
-            String url = "jdbc:sqlserver://localhost:1433;databaseName=FoodOrder;encrypt=true;trustServerCertificate=true;";
-            String username = "sa";
-            String password = "abcd1234";
-            try {
-                Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-                System.out.println("dcmmm");
-                return DriverManager.getConnection(url, username, password);
-            
+    public static Connection getConnection() {
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=FoodOrder;encrypt=true;trustServerCertificate=true;";
+        String username = "sa";
+        String password = "abcd1234";
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            System.out.println("dcmmm");
+            return DriverManager.getConnection(url, username, password);
+
         } catch (ClassNotFoundException ex) {
             System.out.println("Không load được driver");
         } catch (SQLException ex) {

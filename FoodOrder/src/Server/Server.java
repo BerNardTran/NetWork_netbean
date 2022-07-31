@@ -12,7 +12,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import Entity.User;
 import Const.PORT;
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,7 +64,7 @@ public class Server {
             PrintWriter out = null;
             BufferedReader in = null;
             StringBuilder stringBuilder = new StringBuilder();
-            Gson gson = new Gson();
+//            Gson gson = new Gson();
             try {
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -85,6 +85,10 @@ public class Server {
                 if("checkedUserExist".equals(command)){
                     String userName = commandData;
                     int userid = UserHandle.checkedUserExist(userName);
+                    if (userid != 0) {
+//                        OrderHandle.CreateOrder(userid);
+                        System.out.println(OrderHandle.GetOrder(userid));
+                    }
                     out.println(userid);
                 }
                 
