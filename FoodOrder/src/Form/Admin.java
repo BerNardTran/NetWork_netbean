@@ -111,11 +111,16 @@ public class Admin extends javax.swing.JFrame {
 
         addBtn.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         addBtn.setForeground(new java.awt.Color(153, 153, 255));
-        addBtn.setText("Add");
+        addBtn.setText("Insert");
         addBtn.setBorder(new javax.swing.border.MatteBorder(null));
         addBtn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addBtnMouseClicked(evt);
+            }
+        });
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addBtnActionPerformed(evt);
             }
         });
 
@@ -307,7 +312,7 @@ public class Admin extends javax.swing.JFrame {
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -484,6 +489,10 @@ public class Admin extends javax.swing.JFrame {
     private void productIDVarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productIDVarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_productIDVarActionPerformed
+
+    private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addBtnActionPerformed
 
     public void SelectProduct() {
         Con = JDBCConnection.getConnection(user, pass);
