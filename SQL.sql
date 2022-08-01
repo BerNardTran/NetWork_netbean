@@ -51,30 +51,18 @@ values
 	('Vegetable','Is the vegetables', 50000, 'abc')
 
 
-insert into [User]
-values
-	('Gia Minh'),
-	('Bao Khanh')
+insert into [User] values ('Gia Minh'), ('Bao Khanh')
 
-insert into [Order]
-values
-	(0,1),
-	(0,2)
+insert into [Order] values (0,1), (0,2)
 
 
-insert into FoodOrder
-values 
-	(3, 1, 5),	
-	(1, 1, 10),
-	(2, 1, 7),
-	(1, 2, 10),
-	(3, 2, 5)
+insert into FoodOrder values (3, 1, 5),	(1, 1, 10), (2, 1, 7), (1, 2, 10), (3, 2, 5)
 
 
 select * from [User];
 select * from [Order];
 select * from FoodOrder;
-insert into FoodOrder values(1,2,1)
+insert into FoodOrder values(1, 2, 1)
 
 select * from Food;
 
