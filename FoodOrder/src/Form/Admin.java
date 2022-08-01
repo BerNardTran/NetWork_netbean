@@ -31,10 +31,10 @@ public class Admin extends javax.swing.JFrame {
     /**
      * Creates new form Products
      */
-    public Admin(String ID) {
-        id = ID;
+    public Admin() {
+
         initComponents();
-        SelectProduct();
+
     }
 
     /**
@@ -49,8 +49,6 @@ public class Admin extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        branchIDVar = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         productIDVar = new javax.swing.JTextField();
         updateBtn = new javax.swing.JButton();
@@ -65,7 +63,7 @@ public class Admin extends javax.swing.JFrame {
         priceVar1 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        imgVar = new javax.swing.JTextField();
+        chooseIMG = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -79,13 +77,6 @@ public class Admin extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(153, 153, 255));
         jLabel3.setText("Admin Manage");
-
-        jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(153, 153, 255));
-        jLabel2.setText("ID");
-
-        branchIDVar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        branchIDVar.setForeground(new java.awt.Color(153, 153, 255));
 
         jLabel4.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(153, 153, 255));
@@ -149,11 +140,11 @@ public class Admin extends javax.swing.JFrame {
 
             },
             new String [] {
-                "BranchID", "ProductID", "Name", "Type", "Quantity", "Price", "Unit"
+                "Name", "Quantity", "Price", "URL"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, true, false
+                false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -188,8 +179,15 @@ public class Admin extends javax.swing.JFrame {
         jLabel12.setForeground(new java.awt.Color(153, 153, 255));
         jLabel12.setText("Image");
 
-        imgVar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        imgVar.setForeground(new java.awt.Color(153, 153, 255));
+        chooseIMG.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        chooseIMG.setForeground(new java.awt.Color(153, 153, 255));
+        chooseIMG.setText("File");
+        chooseIMG.setBorder(new javax.swing.border.MatteBorder(null));
+        chooseIMG.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                chooseIMGMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -208,36 +206,35 @@ public class Admin extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel4))
-                                .addGap(54, 54, 54)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(productIDVar, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(branchIDVar, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(nameVar1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel12))
-                        .addGap(29, 29, 29)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(imgVar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(priceVar1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(15, 15, 15))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(165, 165, 165)
                         .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 167, Short.MAX_VALUE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(130, 130, 130)
-                        .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(62, 62, 62)
+                                .addComponent(productIDVar, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(5, 5, 5)
+                                .addComponent(nameVar1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(38, 38, 38))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel12)
+                                .addGap(29, 29, 29)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(priceVar1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                            .addComponent(chooseIMG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(15, 15, 15)))
                 .addGap(94, 94, 94))
         );
         jPanel2Layout.setVerticalGroup(
@@ -246,27 +243,17 @@ public class Admin extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(branchIDVar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(productIDVar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(priceVar1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
-                            .addComponent(imgVar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(21, 21, 21)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(priceVar1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10)
+                    .addComponent(productIDVar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(78, 78, 78)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nameVar1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel12)
+                    .addComponent(chooseIMG, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(91, 91, 91)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -309,7 +296,7 @@ public class Admin extends javax.swing.JFrame {
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -330,157 +317,30 @@ public class Admin extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    public Boolean UndoAction(){
-        final JOptionPane msg = new JOptionPane("Do you want to undo your action?", JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
-        final JDialog dlg = msg.createDialog("UNDO");
-        dlg.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        dlg.setLocationRelativeTo(this);
-        dlg.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentShown(ComponentEvent e) {
-                super.componentShown(e);
-                final Timer t = new Timer(5000,new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        dlg.setVisible(false);
-                    }
-                });
-                t.start();
-            }
-        });
-        dlg.setVisible(true);
-         Object selectedvalue = msg.getValue();
-        if (selectedvalue.equals(JOptionPane.OK_OPTION)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
+    
     private void updateBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateBtnMouseClicked
         // TODO add your handling code here:
-        if(branchIDVar.getText().isEmpty() || productIDVar.getText().isEmpty() || unitVar.getText().isEmpty() || quanVar.getText().isEmpty() || nameVar1.getText().isEmpty() || priceVar1.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Missing infomation !!!");
-        } else {
-            Con = JDBCConnection.getConnection(user, pass);
-            
-            String sql0 = "UPDATE PRODUCT SET ProductName = ?, Price=?, NoInventory = NoInventory + ? - (SELECT Quantity FROM STORAGE WHERE BranchID = ? AND ProductID = ?) WHERE ProductID = ?";
-            String sql1 = "UPDATE STORAGE SET Quantity = ? WHERE BranchID = ? AND ProductID = ?";
-            try{
-                Con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
-                Con.setAutoCommit(false);
-                String masp = productIDVar.getText(), macn = branchIDVar.getText();
-                ps = Con.prepareStatement(sql0);
-                ps.setString(1, nameVar1.getText());
-                ps.setInt(2, Integer.valueOf(priceVar1.getText()));
-                ps.setInt(3, Integer.valueOf(quanVar.getText()));
-                ps.setString(4, macn);
-                ps.setString(5, masp);
-                ps.setString(6, masp);
-                
-                PreparedStatement ps1 = Con.prepareStatement(sql1);                                      
-                ps1.setInt(1, Integer.valueOf(quanVar.getText()));
-                ps1.setString(2, macn);
-                ps1.setString(3, masp);
-                
-                ps.execute();
-                ps1.execute();
-                Boolean undo = UndoAction();
-                if(undo)
-                    Con.rollback();
-                else {
-                    Con.commit();
-                    JOptionPane.showMessageDialog(this, "Information have been Updated !!!");    
-                }        
-            } catch (Exception e){
-                e.printStackTrace();
-                try {
-                    Con.rollback();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } finally{
-                try {
-                    Con.setAutoCommit(true);
-                    Con.close();                    
-                } catch (SQLException ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        SelectProduct();
+      
     }//GEN-LAST:event_updateBtnMouseClicked
     private void productTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productTableMouseClicked
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel)productTable.getModel();
-        int Myindex = productTable.getSelectedRow();
-        branchIDVar.setText(model.getValueAt(Myindex, 0).toString());
-        productIDVar.setText(model.getValueAt(Myindex, 1).toString());
-        nameVar1.setText(model.getValueAt(Myindex, 2).toString());
-        typeVar.setSelectedItem(model.getValueAt(Myindex, 3).toString());
-        quanVar.setText(model.getValueAt(Myindex, 4).toString());
-        priceVar1.setText(model.getValueAt(Myindex, 5).toString());
-        unitVar.setText(model.getValueAt(Myindex, 6).toString());
-        imgVar.setText(model.getValueAt(Myindex, 7).toString());
+        
        
     }//GEN-LAST:event_productTableMouseClicked
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_jLabel9MouseClicked
-    private String getTypee(){
-        String res = null;
-        String unit = typeVar.getSelectedItem().toString();
-        switch (unit) {
-            case "Stationery" -> res = "01";
-            case "Electric Appliances" -> res = "02";
-            case "Kitchen Utensils & Appliances" -> res = "03";
-            case "Phone Accessories" -> res = "04";
-            case "Detergents" -> res = "05";
-            case "Beauty & Personal Care" -> res = "06";
-            case "Food" -> res = "07";
-            case "Beverage" -> res = "08";
-            default -> {
-            }
-        }
-        return res;
-    }
+
     private void addBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnMouseClicked
         // TODO add your handling code here:
-        if(branchIDVar.getText().isEmpty() || productIDVar.getText().isEmpty() || unitVar.getText().isEmpty() || quanVar.getText().isEmpty() || nameVar1.getText().isEmpty() || priceVar1.getText().isEmpty()){
-            JOptionPane.showMessageDialog(this, "Missing infomation !!!");
-        } else {
-            String type = getTypee();
-            System.out.println(type);
-            Con = JDBCConnection.getConnection(user, pass);
-            String sql = "EXEC pr_InsProd ?,?,?,?,?,?,?,?";
-            try{               
-                ps = Con.prepareStatement(sql);
-                ps.setString(1, productIDVar.getText());
-                ps.setString(2, nameVar1.getText());
-                ps.setString(3, type);
-                ps.setString(4, unitVar.getText());
-                ps.setInt(5, Integer.valueOf(priceVar1.getText()));
-                ps.setString(6, branchIDVar.getText());               
-                ps.setInt(7, Integer.valueOf(quanVar.getText()));
-                ps.setString(8, imgVar.getText());
-                ps.execute();
-                JOptionPane.showMessageDialog(this, "Product have just been added !!!");        
-            } catch (HeadlessException | NumberFormatException | SQLException e){
-                e.printStackTrace();
-            }
-            SelectProduct();
-        }
+      
     }//GEN-LAST:event_addBtnMouseClicked
 
     private void clearBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearBtnMouseClicked
         // TODO add your handling code here:
-        branchIDVar.setText("");
-        productIDVar.setText("");
-        nameVar1.setText("");
-        quanVar.setText("");
-        unitVar.setText("");
-        quanVar.setText("");
-        priceVar1.setText("");
+       
     }//GEN-LAST:event_clearBtnMouseClicked
 
     private void productIDVarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productIDVarActionPerformed
@@ -491,17 +351,12 @@ public class Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_addBtnActionPerformed
 
+    private void chooseIMGMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chooseIMGMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_chooseIMGMouseClicked
+
     public void SelectProduct() {
-        Con = JDBCConnection.getConnection(user, pass);
-        String sql = "EXEC pr_getProductByPartner ?";
-        try{
-            ps = Con.prepareStatement(sql);
-            ps.setString(1,id);
-            Rs = ps.executeQuery();            
-            productTable.setModel(DbUtils.resultSetToTableModel(Rs));
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+        
     } 
     /**
      * @param args the command line arguments
@@ -537,22 +392,15 @@ public class Admin extends javax.swing.JFrame {
 //            }
 //        });
 //    }
-    private Connection Con = null;
-    private Statement St = null;
-    private PreparedStatement ps = null;
-    private ResultSet Rs = null;
-    private String user = "DT", pass = "DT";
-    private String id;
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
-    private javax.swing.JTextField branchIDVar;
+    private javax.swing.JButton chooseIMG;
     private javax.swing.JButton clearBtn;
-    private javax.swing.JTextField imgVar;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

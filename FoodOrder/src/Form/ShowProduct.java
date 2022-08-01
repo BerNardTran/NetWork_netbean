@@ -49,9 +49,9 @@ public class ShowProduct extends javax.swing.JFrame {
     public ShowProduct(int orderId){
         this.orderId = orderId;
         initComponents();
-        System.out.println("utyt" + orderId);
+        System.out.println("cac: " + orderId);
         show_menu();
-//        show_buy_product();
+        show_buy_product();
 //        populateJTable(new QueryForProduct().BindTable(user, pass));
     }
 
@@ -466,14 +466,13 @@ public class ShowProduct extends javax.swing.JFrame {
         System.out.println("quantity: " + quantityStr);
 //        String quanVar = quantityVar.getText();
         System.out.println("name: " + nameFood + " | price: " + priceFood + " | quantity: " + quantityStr);
-//        System.out.println("name: " +  name);
-        FormatData formatData = new FormatData();
                
 //        int orderId = formatData.orderId;
         int foodId = OrderHandler.getFoodIdByName(nameFood);
         int quantity = (int)quantityVar.getValue();
         System.out.println("orderId: " + this.orderId + ", foodId: " + foodId + ", quantity: " + quantity);
         OrderHandler.insertOneProduct(foodId, orderId, quantity);
+        show_buy_product();
     }//GEN-LAST:event_AddBtnMouseClicked
 
     private void ProductTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProductTableMouseClicked
@@ -536,9 +535,11 @@ public class ShowProduct extends javax.swing.JFrame {
     
     
     private void show_buy_product(){
-        ArrayList<BuyProduct> listBuyProduct = FoodOrderHandler.getAllFoodOrder();
+        ArrayList<BuyProduct> listBuyProduct = FoodOrderHandler.getAllFoodOrder(orderId);
         DefaultTableModel model = (DefaultTableModel)FoodOrderTable.getModel();
+        model.setRowCount(0);
         Object[] row = new Object[3];
+       
         for(int i = 0; i < listBuyProduct.size(); i++){
             row[0] = listBuyProduct.get(i).getName();
             row[1] = listBuyProduct.get(i).getCost();

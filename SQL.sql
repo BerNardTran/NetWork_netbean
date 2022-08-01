@@ -126,4 +126,38 @@ select * from FoodOrder
 --select foodName, foodCost, quantity from Food inner join FoodOrder on Food.foodId = FoodOrder.foodId
 
 go
-create trigger create_user_order_after_create_new_order on [order] after insert 
+
+
+--create trigger create_user_order_after_create_new_order on [order] after insert 
+
+select foodName, foodCost, quantity from Food inner join FoodOrder on Food.foodId = FoodOrder.foodId where FoodOrder.orderId = 2;
+select * from FoodOrder where orderId = 2
+
+
+delete from FoodOrder where orderId = 2 and foodId= 1 and quantity = 1
+select * from FoodOrder where orderId = 2
+
+go
+CREATE PROCEDURE checking_to_update_or_insert @foodId int, @orderId int, @quantity int
+AS
+begin
+	declare @currentQuantity int = 0;
+	if (EXISTS (select * from FoodOrder where orderId = @orderId and @foodId = foodId))
+		begin
+			select @currentQuantity = quantity from FoodOrder where orderId = @orderId AND @foodId = foodId;
+			update FoodOrder
+			set quantity = @currentQuantity + @quantity
+			where orderId = @orderId and foodId = @foodId
+		end
+	else
+		begin
+			insert into FoodOrder values(@foodId, @orderId,@quantity)
+		end
+end
+GO;
+
+select * from FoodOrder where orderId = 2
+
+exec checking_to_update_or_insert 1,2,5
+
+--select * from [Order] where userId = 2 and orderId = (select max(orderId) from [order] where userId = 2)

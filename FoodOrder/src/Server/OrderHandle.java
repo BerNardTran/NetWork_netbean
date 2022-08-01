@@ -30,7 +30,7 @@ public class OrderHandle {
     public static int GetOrder(int userId) {
         Connection connection = null;
         connection = ConnectionDatabase.getConnection();
-        String sqlQuery = "  select top(1) * from [Order] where userId = '" + userId + "'";
+        String sqlQuery = "  select * from [Order] where userId = '" + userId + "' and orderId = (select max(orderId) from [order] where userId = '" + userId +"')" ;
         int orderId = 0;
         try {
             Statement statement = connection.createStatement();

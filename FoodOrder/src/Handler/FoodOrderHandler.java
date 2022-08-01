@@ -49,12 +49,12 @@ public class FoodOrderHandler {
         }
     }
     
-    public static ArrayList getAllFoodOrder(){
+    public static ArrayList getAllFoodOrder(int orderId){
         ArrayList<BuyProduct> listFoodOrder = new ArrayList<>();
         Connection connection = ConnectionDatabase.getConnection();
         
         try{
-            String sql = "select foodName, foodCost, quantity from Food inner join FoodOrder on Food.foodId = FoodOrder.foodId";
+            String sql = "select foodName, foodCost, quantity from Food inner join FoodOrder on Food.foodId = FoodOrder.foodId where FoodOrder.orderId = " + orderId;
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             while(resultSet.next()){
