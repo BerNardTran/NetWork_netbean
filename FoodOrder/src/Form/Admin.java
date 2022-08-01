@@ -146,10 +146,7 @@ public class Admin extends javax.swing.JFrame {
         productTable.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         productTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "BranchID", "ProductID", "Name", "Type", "Quantity", "Price", "Unit"
