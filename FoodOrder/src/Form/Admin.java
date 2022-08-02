@@ -4,19 +4,25 @@
  */
 package Form;
 
+import Entity.Food;
+import Handler.FoodHandler;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
@@ -34,7 +40,7 @@ public class Admin extends javax.swing.JFrame {
     public Admin() {
 
         initComponents();
-
+        show_menu();
     }
 
     /**
@@ -50,7 +56,7 @@ public class Admin extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        productIDVar = new javax.swing.JTextField();
+        foodName = new javax.swing.JTextField();
         updateBtn = new javax.swing.JButton();
         addBtn = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -59,11 +65,15 @@ public class Admin extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         productTable = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
-        nameVar1 = new javax.swing.JTextField();
-        priceVar1 = new javax.swing.JTextField();
+        descriptionText = new javax.swing.JTextField();
+        foodPrice = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         chooseIMG = new javax.swing.JButton();
+        ShowPathFile = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        ShowNameFile = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -82,11 +92,11 @@ public class Admin extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(153, 153, 255));
         jLabel4.setText("Name");
 
-        productIDVar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        productIDVar.setForeground(new java.awt.Color(153, 153, 255));
-        productIDVar.addActionListener(new java.awt.event.ActionListener() {
+        foodName.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        foodName.setForeground(new java.awt.Color(153, 153, 255));
+        foodName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productIDVarActionPerformed(evt);
+                foodNameActionPerformed(evt);
             }
         });
 
@@ -140,11 +150,11 @@ public class Admin extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Name", "Quantity", "Price", "URL"
+                "Id", "Name", "Description", "Price", "URL"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -165,11 +175,11 @@ public class Admin extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(153, 153, 255));
         jLabel5.setText("Description");
 
-        nameVar1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        nameVar1.setForeground(new java.awt.Color(153, 153, 255));
+        descriptionText.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        descriptionText.setForeground(new java.awt.Color(153, 153, 255));
 
-        priceVar1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        priceVar1.setForeground(new java.awt.Color(153, 153, 255));
+        foodPrice.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        foodPrice.setForeground(new java.awt.Color(153, 153, 255));
 
         jLabel10.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(153, 153, 255));
@@ -177,7 +187,7 @@ public class Admin extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(153, 153, 255));
-        jLabel12.setText("Image");
+        jLabel12.setText("Path file");
 
         chooseIMG.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         chooseIMG.setForeground(new java.awt.Color(153, 153, 255));
@@ -188,6 +198,19 @@ public class Admin extends javax.swing.JFrame {
                 chooseIMGMouseClicked(evt);
             }
         });
+        chooseIMG.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseIMGActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(153, 153, 255));
+        jLabel13.setText("Image");
+
+        jLabel14.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(153, 153, 255));
+        jLabel14.setText("Name file");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -214,27 +237,33 @@ public class Admin extends javax.swing.JFrame {
                         .addGap(130, 130, 130)
                         .addComponent(clearBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addGap(62, 62, 62)
-                                .addComponent(productIDVar, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(foodName, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel5)
-                                .addGap(5, 5, 5)
-                                .addComponent(nameVar1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(descriptionText)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addGap(38, 38, 38))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addGap(29, 29, 29)))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(priceVar1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
-                            .addComponent(chooseIMG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(15, 15, 15)))
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel13)
+                                    .addComponent(jLabel10))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(foodPrice)
+                                    .addComponent(chooseIMG, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel14)
+                                    .addComponent(jLabel12))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(ShowPathFile, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(ShowNameFile, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addGap(94, 94, 94))
         );
         jPanel2Layout.setVerticalGroup(
@@ -243,18 +272,31 @@ public class Admin extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(priceVar1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(productIDVar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addGap(78, 78, 78)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameVar1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel12)
-                    .addComponent(chooseIMG, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(91, 91, 91)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(foodPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10)
+                            .addComponent(foodName, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(78, 78, 78)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(descriptionText, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5)
+                                    .addComponent(chooseIMG, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel13)))
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel14))
+                    .addComponent(ShowNameFile, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ShowPathFile, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(updateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -264,7 +306,7 @@ public class Admin extends javax.swing.JFrame {
                 .addComponent(jLabel11)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         jLabel9.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
@@ -318,15 +360,26 @@ public class Admin extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    
+
     private void updateBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateBtnMouseClicked
         // TODO add your handling code here:
-      
+        int Myindex = productTable.getSelectedRow();
+        int foodId = Integer.valueOf(productTable.getValueAt(Myindex, 0).toString());
+        String name = foodName.getText();
+        String des = descriptionText.getText();
+        float price = Float.parseFloat(foodPrice.getText());
+        String url = ShowPathFile.getText();
+        System.out.println("FoodId: " + foodId);
+        FoodHandler.UpdateFoodItem(foodId, name, des, price, url);
+        show_menu();
     }//GEN-LAST:event_updateBtnMouseClicked
     private void productTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productTableMouseClicked
         // TODO add your handling code here:
-        
-       
+        int Myindex = productTable.getSelectedRow();
+//        nameVar.setText(ProductTable.getValueAt(Myindex, 5).toString());
+        foodName.setText(productTable.getValueAt(Myindex, 1).toString());
+        descriptionText.setText(productTable.getValueAt(Myindex, 2).toString());
+        foodPrice.setText(productTable.getValueAt(Myindex, 3).toString());
     }//GEN-LAST:event_productTableMouseClicked
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
         // TODO add your handling code here:
@@ -335,17 +388,22 @@ public class Admin extends javax.swing.JFrame {
 
     private void addBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBtnMouseClicked
         // TODO add your handling code here:
-      
+        String name = foodName.getText();
+        String des = descriptionText.getText();
+        float price = Float.parseFloat(foodPrice.getText());
+        String url = ShowPathFile.getText();
+        FoodHandler.InsertFoodItem(name, des, price, url);
+        show_menu();
     }//GEN-LAST:event_addBtnMouseClicked
 
     private void clearBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearBtnMouseClicked
         // TODO add your handling code here:
-       
+
     }//GEN-LAST:event_clearBtnMouseClicked
 
-    private void productIDVarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productIDVarActionPerformed
+    private void foodNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_foodNameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_productIDVarActionPerformed
+    }//GEN-LAST:event_foodNameActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // TODO add your handling code here:
@@ -353,54 +411,82 @@ public class Admin extends javax.swing.JFrame {
 
     private void chooseIMGMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chooseIMGMouseClicked
         // TODO add your handling code here:
+        System.out.println(chooseIMG.getText());
     }//GEN-LAST:event_chooseIMGMouseClicked
 
+    private void chooseIMGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseIMGActionPerformed
+        // TODO add your handling code here:
+        if(evt.getSource() == chooseIMG){
+            JFileChooser fileChooser = new JFileChooser(); 
+            int response = fileChooser.showSaveDialog(null);
+            
+            if(response == JFileChooser.APPROVE_OPTION){
+                File file;
+                try {
+                    file = new File(fileChooser.getSelectedFile().getCanonicalPath());
+                    ShowNameFile.setText(file.getName());
+                    ShowPathFile.setText(file.getPath());
+                    System.out.println(">>>> " + file);
+                } catch (IOException ex) {
+                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+        }
+    }//GEN-LAST:event_chooseIMGActionPerformed
+
     public void SelectProduct() {
-        
-    } 
+
+    }
+
+    private void show_menu() {
+        ArrayList<Food> listFood = FoodHandler.getAllMenu();
+        DefaultTableModel model = (DefaultTableModel) productTable.getModel();
+        model.setRowCount(0);
+        Object[] row = new Object[5];
+        for (int i = 0; i < listFood.size(); i++) {
+            row[0] = listFood.get(i).getFoodId();
+            row[1] = listFood.get(i).getFoodName();
+            row[2] = listFood.get(i).getFoodDescription();
+            row[3] = listFood.get(i).getFoodCost();
+            row[4] = listFood.get(i).getFoodUrlIMG();
+            model.addRow(row);
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(Products.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(Products.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(Products.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(Products.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new Products().setVisible(true);
-//            }
-//        });
-//    }
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> {
+            new Admin().setVisible(true);
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ShowNameFile;
+    private javax.swing.JLabel ShowPathFile;
     private javax.swing.JButton addBtn;
     private javax.swing.JButton chooseIMG;
     private javax.swing.JButton clearBtn;
+    private javax.swing.JTextField descriptionText;
+    private javax.swing.JTextField foodName;
+    private javax.swing.JTextField foodPrice;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -408,9 +494,6 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField nameVar1;
-    private javax.swing.JTextField priceVar1;
-    private javax.swing.JTextField productIDVar;
     private javax.swing.JTable productTable;
     private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables

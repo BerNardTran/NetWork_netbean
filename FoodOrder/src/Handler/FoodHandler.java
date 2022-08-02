@@ -77,4 +77,41 @@ public class FoodHandler {
 //    public static void main(String[]) args){
 //        FoodHandler.getAllMenu();
 //    }
+    
+    public static void InsertFoodItem(String name, String des, float price, String url){
+        Connection connection = null;
+        connection = ConnectionDatabase.getConnection();
+        String sql = "insert into Food values (?, ?, ?, ?)";
+        
+        try {
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, name);
+            pre.setString(2, des);
+            pre.setFloat(3, price);
+            pre.setString(4, url);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    
+    public static void UpdateFoodItem(int foodId, String name, String des, float price, String url){
+        Connection connection = null;
+        connection = ConnectionDatabase.getConnection();
+        String sql = "update Food set foodName = ?, foodDescription = ?, foodCost = ?, foodUrlIMG = ? where foodId = ?" ; 
+        
+        try{
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setString(1, name);
+            pre.setString(2, des);
+            pre.setFloat(3, price);
+            pre.setString(4, url);
+            pre.setInt(5,  foodId);
+            pre.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        
+    }
 }
