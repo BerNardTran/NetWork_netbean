@@ -114,4 +114,17 @@ public class FoodHandler {
         }
         
     }
+    
+    public static void DeleteFoodItem(int foodId){
+        Connection connection = null;
+        connection = ConnectionDatabase.getConnection();
+        String sql = "delete from Food where foodId = ?";
+        try{
+            PreparedStatement pre = connection.prepareStatement(sql);
+            pre.setInt(1, foodId);
+            pre.executeUpdate();
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
