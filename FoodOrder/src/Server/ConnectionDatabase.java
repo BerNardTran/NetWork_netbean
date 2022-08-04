@@ -13,24 +13,8 @@ import java.sql.SQLException;
  *
  * @author ASUS
  */
-
 public class ConnectionDatabase {
-//    private static String DB_URL = "jdbc:sqlserver://localhost:1433;databaseName=FoodOrder;encrypt=true;trustServerCertificate=true;";
-//    private static String Username = "sa";
-//    private static String Password = "abcd1234";
 
-//    public static Connection getConnection(){
-//        try{
-//            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-////            System.out.println("Connected success");
-//            return DriverManager.getConnection(DB_URL, Username, Password);
-//        } catch (SQLException e) {
-//            System.out.println("Không kết nối được");
-//        } catch (ClassNotFoundException e) {
-//            System.out.println("Không load được driver");
-//        }
-//        return null;
-//    }
     public static Connection getConnection() {
         String url = "jdbc:sqlserver://localhost:1433;databaseName=FoodOrder;encrypt=true;trustServerCertificate=true;";
         String username = "sa";
@@ -47,4 +31,19 @@ public class ConnectionDatabase {
         }
         return null;
     }
+
+    public Connection getConnection2() throws SQLException {
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=FoodOrder;encrypt=true;trustServerCertificate=true;";
+        String Username = "sa";
+        String Password = "abcd1234";
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            System.out.println("Connected success");
+            return DriverManager.getConnection(url, Username, Password);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Không load được driver");
+        }
+        return null;
+    }
+
 }
