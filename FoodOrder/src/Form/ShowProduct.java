@@ -13,7 +13,9 @@ import Server.ConnectionDatabase;
 import Server.FormatData;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,7 +34,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
-
 /**
  *
  * @author ranco
@@ -41,12 +42,13 @@ public class ShowProduct extends javax.swing.JFrame {
 
     /**
      * Creates new form ShowProduct
+     *
      * @param ID
      * @throws java.io.IOException
      */
     private int orderId;
 
-    public ShowProduct(int orderId){
+    public ShowProduct(int orderId) {
         this.orderId = orderId;
         initComponents();
         System.out.println("cac: " + orderId);
@@ -420,15 +422,15 @@ public class ShowProduct extends javax.swing.JFrame {
     private void confirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmBtnMouseClicked
         //show a dialog or notification
 //        Connection connection = ConnectionDatabase.getConnection();
-        
-        
+
+
     }//GEN-LAST:event_confirmBtnMouseClicked
 
     private void clearBillBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearBillBtnMouseClicked
         // TODO add your handling code here:
 
     }//GEN-LAST:event_clearBillBtnMouseClicked
-    
+
     private void AddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddBtnMouseClicked
         // TODO add your handling code here:
         String nameFood = nameVar.getText();
@@ -437,10 +439,10 @@ public class ShowProduct extends javax.swing.JFrame {
         System.out.println("quantity: " + quantityStr);
 //        String quanVar = quantityVar.getText();
         System.out.println("name: " + nameFood + " | price: " + priceFood + " | quantity: " + quantityStr);
-               
+
 //        int orderId = formatData.orderId;
         int foodId = OrderHandler.getFoodIdByName(nameFood);
-        int quantity = (int)quantityVar.getValue();
+        int quantity = (int) quantityVar.getValue();
         System.out.println("orderId: " + this.orderId + ", foodId: " + foodId + ", quantity: " + quantity);
         OrderHandler.insertOneProduct(foodId, orderId, quantity);
         show_buy_product();
@@ -452,7 +454,7 @@ public class ShowProduct extends javax.swing.JFrame {
 //        nameVar.setText(ProductTable.getValueAt(Myindex, 5).toString());
         nameVar.setText(ProductTable.getValueAt(Myindex, 1).toString());
         priceVar.setText(ProductTable.getValueAt(Myindex, 3).toString());
-       
+
     }//GEN-LAST:event_ProductTableMouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
@@ -477,39 +479,117 @@ public class ShowProduct extends javax.swing.JFrame {
 //        welcomeUser.setText("Welcome " + );
     }//GEN-LAST:event_welcomeUserInputMethodTextChanged
 
-    private void clearTable(){
-        ((DefaultTableModel)ProductTable.getModel()).setNumRows(0);
-    }      
-    
+    private void clearTable() {
+        ((DefaultTableModel) ProductTable.getModel()).setNumRows(0);
+    }
 
-    private void show_menu(){
+//    private BufferedImage showIMG(String url) {
+//        BufferedImage img = null;
+//        try {
+//            img = ImageIO.read(new File(url)); // eventually C:\\ImageTest\\pic2.jpg
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return img;
+//    }
+//
+//    private void show_menu() {
+//        ArrayList<Food> listFood = FoodHandler.getAllMenu();
+//        DefaultTableModel model = (DefaultTableModel) ProductTable.getModel();
+//        Object[] row = new Object[5];
+//        for (int i = 0; i < listFood.size(); i++) {
+//            row[0] = listFood.get(i).getFoodId();
+//            row[1] = listFood.get(i).getFoodName();
+//            row[2] = listFood.get(i).getFoodDescription();
+//            row[3] = listFood.get(i).getFoodCost();
+//            row[4] = showIMG(listFood.get(i).getFoodUrlIMG());
+//
+//            model.addRow(row);
+//        }
+//    }
+    /*
+    private void jButtonBrowseImageActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        JFileChooser browseImageFile = new JFileChooser("D:\\Images");
+        //Filter image extensions
+        FileNameExtensionFilter fnef = new FileNameExtensionFilter("IMAGES", "png", "jpg", "jpeg");
+        browseImageFile.addChoosableFileFilter(fnef);
+        int showOpenDialogue = browseImageFile.showOpenDialog(null);
+
+        if (showOpenDialogue == JFileChooser.APPROVE_OPTION) {
+            File selectedImageFile = browseImageFile.getSelectedFile();
+            selectedImagePath = selectedImageFile.getAbsolutePath();
+            JOptionPane.showMessageDialog(null, selectedImagePath);
+            //Display image on jlable
+            ImageIcon ii = new ImageIcon(selectedImagePath);
+//            Resize image to fit jlabel
+            Image image = ii.getImage().getScaledInstance(jLabelImage.getWidth(), jLabelImage.getHeight(), Image.SCALE_SMOOTH);
+
+            jLabelImage.setIcon(new ImageIcon(image));
+        }
+
+        Bảo Khánh
+        JLabel imageLabel = new JLabel();
+        ImageIcon imageicon = new ImageIcon(selectedImagePath);
+        Image img = imageicon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+        imageLabel.setIcon(new ImageIcon(img));
+//        imageLabel.setIcon(imageicon);
+
+        //Checking if one or more field is empty
+        if (name.isEmpty() || gender.isEmpty() || programmingLanguage.isEmpty() || Subject.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty");
+        } else {
+//            JOptionPane.showMessageDialog(null, "All Fields are filled");
+            //Adding entered data to jtable
+
+            model.addRow(new Object[]{name, gender, programmingLanguage, Subject, imageLabel});
+            JOptionPane.showMessageDialog(null, "Data Inserted");
+            //clear fields after inserting the data
+            clearFields();
+        }
+    }
+    */
+
+    private void show_menu() {
         ArrayList<Food> listFood = FoodHandler.getAllMenu();
-        DefaultTableModel model = (DefaultTableModel)ProductTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) ProductTable.getModel();
+//        BufferedImage img = null;
         Object[] row = new Object[5];
-        for(int i = 0; i < listFood.size(); i++){
+        for (int i = 0; i < listFood.size(); i++) {
             row[0] = listFood.get(i).getFoodId();
             row[1] = listFood.get(i).getFoodName();
             row[2] = listFood.get(i).getFoodDescription();
             row[3] = listFood.get(i).getFoodCost();
-            row[4] = listFood.get(i).getFoodUrlIMG();
+//            row[4] = listFood.get(i).getFoodUrlIMG();
+            if (listFood.get(i).getFoodUrlIMG() != null) {
+                //                    String replaceURL = listFood.get(i).getFoodUrlIMG().replace('\'','\\');
+
+//                    img = ImageIO.read(new File(replaceURL)); // eventually C:\\ImageTest\\pic2.jpg
+                ImageIcon imageIcon = new ImageIcon("F:\\MMT\\FoodOrder_Project\\NetWork_netbean\\asset\\Untitled.png"); // assign image to a new ImageIcon
+                Image image = imageIcon.getImage(); // transform it 
+                Image newimg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH); // scale it smoothly  
+                ImageIcon newImageIcon = new ImageIcon(newimg);
+                row[4] = newImageIcon;
+            }
             model.addRow(row);
         }
+
     }
-    
-    
-    private void show_buy_product(){
+
+    private void show_buy_product() {
         ArrayList<BuyProduct> listBuyProduct = FoodOrderHandler.getAllFoodOrder(orderId);
-        DefaultTableModel model = (DefaultTableModel)FoodOrderTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) FoodOrderTable.getModel();
         model.setRowCount(0);
         Object[] row = new Object[3];
-       
-        for(int i = 0; i < listBuyProduct.size(); i++){
+
+        for (int i = 0; i < listBuyProduct.size(); i++) {
             row[0] = listBuyProduct.get(i).getName();
             row[1] = listBuyProduct.get(i).getCost();
             row[2] = listBuyProduct.get(i).getQuantity();
             model.addRow(row);
         }
     }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
