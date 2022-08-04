@@ -508,7 +508,6 @@ public class ShowProduct extends javax.swing.JFrame {
 //        welcomeUser.setText("Welcome " + );
     }//GEN-LAST:event_welcomeUserInputMethodTextChanged
 
-<<<<<<< HEAD
     private void clearTable(){
         ((DefaultTableModel)ProductTable.getModel()).setNumRows(0);
     }      
@@ -543,101 +542,6 @@ public class ShowProduct extends javax.swing.JFrame {
             
        
             model.addRow(newIdentifiers);
-=======
-    private void clearTable() {
-        ((DefaultTableModel) ProductTable.getModel()).setNumRows(0);
-    }
-
-//    private BufferedImage showIMG(String url) {
-//        BufferedImage img = null;
-//        try {
-//            img = ImageIO.read(new File(url)); // eventually C:\\ImageTest\\pic2.jpg
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return img;
-//    }
-//
-//    private void show_menu() {
-//        ArrayList<Food> listFood = FoodHandler.getAllMenu();
-//        DefaultTableModel model = (DefaultTableModel) ProductTable.getModel();
-//        Object[] row = new Object[5];
-//        for (int i = 0; i < listFood.size(); i++) {
-//            row[0] = listFood.get(i).getFoodId();
-//            row[1] = listFood.get(i).getFoodName();
-//            row[2] = listFood.get(i).getFoodDescription();
-//            row[3] = listFood.get(i).getFoodCost();
-//            row[4] = showIMG(listFood.get(i).getFoodUrlIMG());
-//
-//            model.addRow(row);
-//        }
-//    }
-    /*
-    private void jButtonBrowseImageActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        JFileChooser browseImageFile = new JFileChooser("D:\\Images");
-        //Filter image extensions
-        FileNameExtensionFilter fnef = new FileNameExtensionFilter("IMAGES", "png", "jpg", "jpeg");
-        browseImageFile.addChoosableFileFilter(fnef);
-        int showOpenDialogue = browseImageFile.showOpenDialog(null);
-
-        if (showOpenDialogue == JFileChooser.APPROVE_OPTION) {
-            File selectedImageFile = browseImageFile.getSelectedFile();
-            selectedImagePath = selectedImageFile.getAbsolutePath();
-            JOptionPane.showMessageDialog(null, selectedImagePath);
-            //Display image on jlable
-            ImageIcon ii = new ImageIcon(selectedImagePath);
-//            Resize image to fit jlabel
-            Image image = ii.getImage().getScaledInstance(jLabelImage.getWidth(), jLabelImage.getHeight(), Image.SCALE_SMOOTH);
-
-            jLabelImage.setIcon(new ImageIcon(image));
-        }
-
-        Bảo Khánh
-        JLabel imageLabel = new JLabel();
-        ImageIcon imageicon = new ImageIcon(selectedImagePath);
-        Image img = imageicon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-        imageLabel.setIcon(new ImageIcon(img));
-//        imageLabel.setIcon(imageicon);
-
-        //Checking if one or more field is empty
-        if (name.isEmpty() || gender.isEmpty() || programmingLanguage.isEmpty() || Subject.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty");
-        } else {
-//            JOptionPane.showMessageDialog(null, "All Fields are filled");
-            //Adding entered data to jtable
-
-            model.addRow(new Object[]{name, gender, programmingLanguage, Subject, imageLabel});
-            JOptionPane.showMessageDialog(null, "Data Inserted");
-            //clear fields after inserting the data
-            clearFields();
-        }
-    }
-    */
-
-    private void show_menu() {
-        ArrayList<Food> listFood = FoodHandler.getAllMenu();
-        DefaultTableModel model = (DefaultTableModel) ProductTable.getModel();
-//        BufferedImage img = null;
-        Object[] row = new Object[5];
-        for (int i = 0; i < listFood.size(); i++) {
-            row[0] = listFood.get(i).getFoodId();
-            row[1] = listFood.get(i).getFoodName();
-            row[2] = listFood.get(i).getFoodDescription();
-            row[3] = listFood.get(i).getFoodCost();
-//            row[4] = listFood.get(i).getFoodUrlIMG();
-            if (listFood.get(i).getFoodUrlIMG() != null) {
-                //                    String replaceURL = listFood.get(i).getFoodUrlIMG().replace('\'','\\');
-
-//                    img = ImageIO.read(new File(replaceURL)); // eventually C:\\ImageTest\\pic2.jpg
-                ImageIcon imageIcon = new ImageIcon("F:\\MMT\\FoodOrder_Project\\NetWork_netbean\\asset\\Untitled.png"); // assign image to a new ImageIcon
-                Image image = imageIcon.getImage(); // transform it 
-                Image newimg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH); // scale it smoothly  
-                ImageIcon newImageIcon = new ImageIcon(newimg);
-                row[4] = newImageIcon;
-            }
-            model.addRow(row);
->>>>>>> 1efe9553d3306e937219729f60412ad90fa55841
         }
 
     }
