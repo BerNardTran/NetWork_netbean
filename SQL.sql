@@ -161,3 +161,10 @@ select * from FoodOrder where orderId = 2
 exec checking_to_update_or_insert 1,2,5
 
 --select * from [Order] where userId = 2 and orderId = (select max(orderId) from [order] where userId = 2)
+
+select * from food
+select * from FoodOrder
+select * from [Order]
+select * from [User]
+
+delete from food where foodId = 2

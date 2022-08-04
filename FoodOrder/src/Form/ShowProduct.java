@@ -39,7 +39,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-
 /**
  *
  * @author ranco
@@ -48,12 +47,13 @@ public class ShowProduct extends javax.swing.JFrame {
 
     /**
      * Creates new form ShowProduct
+     *
      * @param ID
      * @throws java.io.IOException
      */
     private int orderId;
 
-    public ShowProduct(int orderId){
+    public ShowProduct(int orderId) {
         this.orderId = orderId;
         initComponents();
         System.out.println("cac: " + orderId);
@@ -77,7 +77,6 @@ public class ShowProduct extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         ProductTable = new javax.swing.JTable();
         nameVar = new javax.swing.JTextField();
-        fillterBox = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -93,7 +92,6 @@ public class ShowProduct extends javax.swing.JFrame {
         quantityVar = new javax.swing.JSpinner();
         cardVar = new javax.swing.JRadioButton();
         cashVar = new javax.swing.JRadioButton();
-        idVar = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -146,23 +144,8 @@ public class ShowProduct extends javax.swing.JFrame {
         nameVar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         nameVar.setForeground(new java.awt.Color(153, 153, 255));
 
-        fillterBox.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        fillterBox.setForeground(new java.awt.Color(153, 153, 255));
-        fillterBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Lower 50k", "50k to 500k", "Higher 500k", "Stationery", "Electric Appliances", "Kitchen Utensils & Appliances", "Phone Accessories", "Detergents", "Beauty & Personal Care", "Food", "Beverage" }));
-        fillterBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                fillterBoxItemStateChanged(evt);
-            }
-        });
-        fillterBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fillterBoxActionPerformed(evt);
-            }
-        });
-
         jLabel6.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(153, 153, 255));
-        jLabel6.setText("Fillter by:");
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(153, 153, 255));
@@ -253,8 +236,6 @@ public class ShowProduct extends javax.swing.JFrame {
             }
         });
 
-        idVar.setVisible(false);
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -262,19 +243,20 @@ public class ShowProduct extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(75, 75, 75)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(allPaymentVar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(confirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(cashVar)
-                                .addGap(90, 90, 90)
-                                .addComponent(cardVar)))
-                        .addGap(96, 96, 96))))
+                        .addComponent(cashVar)
+                        .addGap(90, 90, 90)
+                        .addComponent(cardVar)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(confirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -289,15 +271,11 @@ public class ShowProduct extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(72, 72, 72)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(fillterBox, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel6)
                                         .addGap(109, 109, 109))
                                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
-                                            .addGap(31, 31, 31)
-                                            .addComponent(idVar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel2)
                                         .addComponent(nameVar, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel3)
                                         .addComponent(priceVar, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -306,7 +284,7 @@ public class ShowProduct extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(99, 99, 99)
                                 .addComponent(AddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,25 +294,18 @@ public class ShowProduct extends javax.swing.JFrame {
                         .addGap(23, 23, 23)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fillterBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel2))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(idVar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(nameVar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(priceVar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(quantityVar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(51, 51, 51)
                         .addComponent(AddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
@@ -379,7 +350,7 @@ public class ShowProduct extends javax.swing.JFrame {
 
         welcomeUser.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
         welcomeUser.setForeground(new java.awt.Color(255, 255, 255));
-        welcomeUser.setText("Welcome .. to our restaurant");
+        welcomeUser.setText("Welcome to our restaurant");
         welcomeUser.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
@@ -401,7 +372,7 @@ public class ShowProduct extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -480,15 +451,15 @@ public class ShowProduct extends javax.swing.JFrame {
     private void confirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmBtnMouseClicked
         //show a dialog or notification
 //        Connection connection = ConnectionDatabase.getConnection();
-        
-        
+
+
     }//GEN-LAST:event_confirmBtnMouseClicked
 
     private void clearBillBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearBillBtnMouseClicked
         // TODO add your handling code here:
 
     }//GEN-LAST:event_clearBillBtnMouseClicked
-    
+
     private void AddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddBtnMouseClicked
         // TODO add your handling code here:
         String nameFood = nameVar.getText();
@@ -497,10 +468,10 @@ public class ShowProduct extends javax.swing.JFrame {
         System.out.println("quantity: " + quantityStr);
 //        String quanVar = quantityVar.getText();
         System.out.println("name: " + nameFood + " | price: " + priceFood + " | quantity: " + quantityStr);
-               
+
 //        int orderId = formatData.orderId;
         int foodId = OrderHandler.getFoodIdByName(nameFood);
-        int quantity = (int)quantityVar.getValue();
+        int quantity = (int) quantityVar.getValue();
         System.out.println("orderId: " + this.orderId + ", foodId: " + foodId + ", quantity: " + quantity);
         OrderHandler.insertOneProduct(foodId, orderId, quantity);
         show_buy_product();
@@ -512,7 +483,7 @@ public class ShowProduct extends javax.swing.JFrame {
 //        nameVar.setText(ProductTable.getValueAt(Myindex, 5).toString());
         nameVar.setText(ProductTable.getValueAt(Myindex, 1).toString());
         priceVar.setText(ProductTable.getValueAt(Myindex, 3).toString());
-       
+
     }//GEN-LAST:event_ProductTableMouseClicked
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
@@ -526,14 +497,6 @@ public class ShowProduct extends javax.swing.JFrame {
 
     }//GEN-LAST:event_cardVarActionPerformed
 
-    private void fillterBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fillterBoxItemStateChanged
-        
-    }//GEN-LAST:event_fillterBoxItemStateChanged
-
-    private void fillterBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fillterBoxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fillterBoxActionPerformed
-
     private void quantityVarStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_quantityVarStateChanged
         // TODO add your handling code here:
         String quantity = quantityVar.getValue().toString();
@@ -545,6 +508,7 @@ public class ShowProduct extends javax.swing.JFrame {
 //        welcomeUser.setText("Welcome " + );
     }//GEN-LAST:event_welcomeUserInputMethodTextChanged
 
+<<<<<<< HEAD
     private void clearTable(){
         ((DefaultTableModel)ProductTable.getModel()).setNumRows(0);
     }      
@@ -579,23 +543,119 @@ public class ShowProduct extends javax.swing.JFrame {
             
        
             model.addRow(newIdentifiers);
+=======
+    private void clearTable() {
+        ((DefaultTableModel) ProductTable.getModel()).setNumRows(0);
+    }
+
+//    private BufferedImage showIMG(String url) {
+//        BufferedImage img = null;
+//        try {
+//            img = ImageIO.read(new File(url)); // eventually C:\\ImageTest\\pic2.jpg
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return img;
+//    }
+//
+//    private void show_menu() {
+//        ArrayList<Food> listFood = FoodHandler.getAllMenu();
+//        DefaultTableModel model = (DefaultTableModel) ProductTable.getModel();
+//        Object[] row = new Object[5];
+//        for (int i = 0; i < listFood.size(); i++) {
+//            row[0] = listFood.get(i).getFoodId();
+//            row[1] = listFood.get(i).getFoodName();
+//            row[2] = listFood.get(i).getFoodDescription();
+//            row[3] = listFood.get(i).getFoodCost();
+//            row[4] = showIMG(listFood.get(i).getFoodUrlIMG());
+//
+//            model.addRow(row);
+//        }
+//    }
+    /*
+    private void jButtonBrowseImageActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+        JFileChooser browseImageFile = new JFileChooser("D:\\Images");
+        //Filter image extensions
+        FileNameExtensionFilter fnef = new FileNameExtensionFilter("IMAGES", "png", "jpg", "jpeg");
+        browseImageFile.addChoosableFileFilter(fnef);
+        int showOpenDialogue = browseImageFile.showOpenDialog(null);
+
+        if (showOpenDialogue == JFileChooser.APPROVE_OPTION) {
+            File selectedImageFile = browseImageFile.getSelectedFile();
+            selectedImagePath = selectedImageFile.getAbsolutePath();
+            JOptionPane.showMessageDialog(null, selectedImagePath);
+            //Display image on jlable
+            ImageIcon ii = new ImageIcon(selectedImagePath);
+//            Resize image to fit jlabel
+            Image image = ii.getImage().getScaledInstance(jLabelImage.getWidth(), jLabelImage.getHeight(), Image.SCALE_SMOOTH);
+
+            jLabelImage.setIcon(new ImageIcon(image));
+        }
+
+        Bảo Khánh
+        JLabel imageLabel = new JLabel();
+        ImageIcon imageicon = new ImageIcon(selectedImagePath);
+        Image img = imageicon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+        imageLabel.setIcon(new ImageIcon(img));
+//        imageLabel.setIcon(imageicon);
+
+        //Checking if one or more field is empty
+        if (name.isEmpty() || gender.isEmpty() || programmingLanguage.isEmpty() || Subject.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "One Or More Fields Are Empty");
+        } else {
+//            JOptionPane.showMessageDialog(null, "All Fields are filled");
+            //Adding entered data to jtable
+
+            model.addRow(new Object[]{name, gender, programmingLanguage, Subject, imageLabel});
+            JOptionPane.showMessageDialog(null, "Data Inserted");
+            //clear fields after inserting the data
+            clearFields();
         }
     }
-    
-    
-    private void show_buy_product(){
+    */
+
+    private void show_menu() {
+        ArrayList<Food> listFood = FoodHandler.getAllMenu();
+        DefaultTableModel model = (DefaultTableModel) ProductTable.getModel();
+//        BufferedImage img = null;
+        Object[] row = new Object[5];
+        for (int i = 0; i < listFood.size(); i++) {
+            row[0] = listFood.get(i).getFoodId();
+            row[1] = listFood.get(i).getFoodName();
+            row[2] = listFood.get(i).getFoodDescription();
+            row[3] = listFood.get(i).getFoodCost();
+//            row[4] = listFood.get(i).getFoodUrlIMG();
+            if (listFood.get(i).getFoodUrlIMG() != null) {
+                //                    String replaceURL = listFood.get(i).getFoodUrlIMG().replace('\'','\\');
+
+//                    img = ImageIO.read(new File(replaceURL)); // eventually C:\\ImageTest\\pic2.jpg
+                ImageIcon imageIcon = new ImageIcon("F:\\MMT\\FoodOrder_Project\\NetWork_netbean\\asset\\Untitled.png"); // assign image to a new ImageIcon
+                Image image = imageIcon.getImage(); // transform it 
+                Image newimg = image.getScaledInstance(120, 120, java.awt.Image.SCALE_SMOOTH); // scale it smoothly  
+                ImageIcon newImageIcon = new ImageIcon(newimg);
+                row[4] = newImageIcon;
+            }
+            model.addRow(row);
+>>>>>>> 1efe9553d3306e937219729f60412ad90fa55841
+        }
+
+    }
+
+    private void show_buy_product() {
         ArrayList<BuyProduct> listBuyProduct = FoodOrderHandler.getAllFoodOrder(orderId);
-        DefaultTableModel model = (DefaultTableModel)FoodOrderTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) FoodOrderTable.getModel();
         model.setRowCount(0);
         Object[] row = new Object[3];
-       
-        for(int i = 0; i < listBuyProduct.size(); i++){
+
+        for (int i = 0; i < listBuyProduct.size(); i++) {
             row[0] = listBuyProduct.get(i).getName();
             row[1] = listBuyProduct.get(i).getCost();
             row[2] = listBuyProduct.get(i).getQuantity();
             model.addRow(row);
         }
     }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -675,8 +735,6 @@ public class ShowProduct extends javax.swing.JFrame {
     private javax.swing.JRadioButton cashVar;
     private javax.swing.JButton clearBillBtn;
     private javax.swing.JButton confirmBtn;
-    private javax.swing.JComboBox<String> fillterBox;
-    private javax.swing.JTextField idVar;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
