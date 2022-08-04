@@ -11,9 +11,12 @@ import Handler.FoodOrderHandler;
 import Handler.OrderHandler;
 import Server.ConnectionDatabase;
 import Server.FormatData;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,9 +31,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 
 /**
@@ -111,7 +118,7 @@ public class ShowProduct extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, true, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -127,8 +134,12 @@ public class ShowProduct extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(ProductTable);
         if (ProductTable.getColumnModel().getColumnCount() > 0) {
-            ProductTable.getColumnModel().getColumn(0).setResizable(false);
             ProductTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+            ProductTable.getColumnModel().getColumn(0).setHeaderValue("Id");
+            ProductTable.getColumnModel().getColumn(1).setHeaderValue("Name");
+            ProductTable.getColumnModel().getColumn(2).setHeaderValue("Description");
+            ProductTable.getColumnModel().getColumn(3).setHeaderValue("Price");
+            ProductTable.getColumnModel().getColumn(4).setHeaderValue("Image");
         }
 
         nameVar.setEditable(false);
@@ -435,6 +446,26 @@ public class ShowProduct extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+    class CellRenderer implements TableCellRenderer {
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table,
+                Object value,
+                boolean isSelected,
+                boolean hasFocus,
+                int row,
+                int column) {
+
+            TableColumn tb = ProductTable.getColumn("Image");
+            tb.setMaxWidth(60);
+            tb.setMinWidth(60);
+
+            ProductTable.setRowHeight(60);
+
+            return (Component) value;
+        }
+
+    }
 
     private void cashVarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashVarActionPerformed
         // TODO add your handling code here:
@@ -518,18 +549,36 @@ public class ShowProduct extends javax.swing.JFrame {
         ((DefaultTableModel)ProductTable.getModel()).setNumRows(0);
     }      
     
-
+    private BufferedImage showIMG(String url) {
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File(url)); // eventually C:\\ImageTest\\pic2.jpg
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return img;
+    }
     private void show_menu(){
         ArrayList<Food> listFood = FoodHandler.getAllMenu();
         DefaultTableModel model = (DefaultTableModel)ProductTable.getModel();
-        Object[] row = new Object[5];
+        Object[] newIdentifiers = new Object[]{"Id", "Name", "Discription", "Price", "Image"};
+        ProductTable.setFillsViewportHeight(true);
+        ProductTable.getColumn("Image").setCellRenderer(new CellRenderer());
+
         for(int i = 0; i < listFood.size(); i++){
-            row[0] = listFood.get(i).getFoodId();
-            row[1] = listFood.get(i).getFoodName();
-            row[2] = listFood.get(i).getFoodDescription();
-            row[3] = listFood.get(i).getFoodCost();
-            row[4] = listFood.get(i).getFoodUrlIMG();
-            model.addRow(row);
+            newIdentifiers[0] = listFood.get(i).getFoodId();
+            newIdentifiers[1] = listFood.get(i).getFoodName();
+            newIdentifiers[2] = listFood.get(i).getFoodDescription();
+            newIdentifiers[3] = listFood.get(i).getFoodCost();
+            JLabel imageLabel = new JLabel();
+            ImageIcon imageicon = new ImageIcon(listFood.get(i).getFoodUrlIMG());
+            Image img = imageicon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+            System.out.println(">>>>> "+ listFood.get(i).getFoodUrlIMG());
+            imageLabel.setIcon(new ImageIcon(img));
+            newIdentifiers[4] = imageLabel;
+            
+       
+            model.addRow(newIdentifiers);
         }
     }
     

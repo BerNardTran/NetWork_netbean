@@ -429,14 +429,10 @@ public class Admin extends javax.swing.JFrame {
             
             if(response == JFileChooser.APPROVE_OPTION){
                 File file;
-                try {
-                    file = new File(fileChooser.getSelectedFile().getCanonicalPath());
-                    ShowNameFile.setText(file.getName());
-                    ShowPathFile.setText(file.getPath());
-                    System.out.println(">>>> " + file);
-                } catch (IOException ex) {
-                    Logger.getLogger(Admin.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                ShowNameFile.setText(file.getName());
+                ShowPathFile.setText(file.getPath());
+                System.out.println(">>>> " + file);
                 
             }
         }
