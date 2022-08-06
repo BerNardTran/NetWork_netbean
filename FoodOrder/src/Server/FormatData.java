@@ -10,6 +10,6 @@ package Server;
  */
 public class FormatData {
     public String name;
-    public int userId;
-    public int orderId;
+    public float cost;
+    public int quantity;
 }

@@ -4,6 +4,7 @@
  */
 package Form;
 
+import Client.SocketFunction;
 import Entity.BuyProduct;
 import Entity.Food;
 import Handler.FoodHandler;
@@ -11,6 +12,7 @@ import Handler.FoodOrderHandler;
 import Handler.OrderHandler;
 import Server.ConnectionDatabase;
 import Server.FormatData;
+import com.google.gson.Gson;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
@@ -56,13 +58,15 @@ public class ShowProduct extends javax.swing.JFrame {
      * @throws java.io.IOException
      */
     private int orderId;
-
-    public ShowProduct(int orderId) {
+    private SocketFunction socketFunction;
+    
+    public ShowProduct(int orderId, SocketFunction socketFunction) throws IOException {
         this.orderId = orderId;
+        this.socketFunction = socketFunction;
         initComponents();
         System.out.println("cac: " + orderId);
         show_menu();
-        show_buy_product();
+//        show_buy_product();
 //        populateJTable(new QueryForProduct().BindTable(user, pass));
     }
 
@@ -91,11 +95,12 @@ public class ShowProduct extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         FoodOrderTable = new javax.swing.JTable();
         allPaymentVar = new javax.swing.JLabel();
-        clearBillBtn = new javax.swing.JButton();
         confirmBtn = new javax.swing.JButton();
         quantityVar = new javax.swing.JSpinner();
         cardVar = new javax.swing.JRadioButton();
         cashVar = new javax.swing.JRadioButton();
+        totalMoney = new javax.swing.JLabel();
+        allPaymentVar2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -195,15 +200,7 @@ public class ShowProduct extends javax.swing.JFrame {
 
         allPaymentVar.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         allPaymentVar.setForeground(new java.awt.Color(153, 153, 255));
-        allPaymentVar.setText("Total:");
-
-        clearBillBtn.setText("Refresh cart");
-        clearBillBtn.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204), new java.awt.Color(204, 204, 204)));
-        clearBillBtn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                clearBillBtnMouseClicked(evt);
-            }
-        });
+        allPaymentVar.setText("vnd");
 
         confirmBtn.setBackground(new java.awt.Color(0, 204, 51));
         confirmBtn.setText("Confirm");
@@ -224,6 +221,11 @@ public class ShowProduct extends javax.swing.JFrame {
         buttonGroup1.add(cardVar);
         cardVar.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         cardVar.setText("By Card");
+        cardVar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cardVarMouseClicked(evt);
+            }
+        });
         cardVar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cardVarActionPerformed(evt);
@@ -240,6 +242,14 @@ public class ShowProduct extends javax.swing.JFrame {
             }
         });
 
+        totalMoney.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        totalMoney.setForeground(new java.awt.Color(153, 153, 255));
+        totalMoney.setText("0");
+
+        allPaymentVar2.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        allPaymentVar2.setForeground(new java.awt.Color(153, 153, 255));
+        allPaymentVar2.setText("Total:");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -247,27 +257,32 @@ public class ShowProduct extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(75, 75, 75)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 530, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(allPaymentVar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addComponent(confirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(cashVar)
+                                .addGap(90, 90, 90)
+                                .addComponent(cardVar)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(cashVar)
-                        .addGap(90, 90, 90)
-                        .addComponent(cardVar)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(confirmBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(allPaymentVar2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(totalMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(allPaymentVar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(261, 261, 261)
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(clearBillBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel7))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,7 +303,7 @@ public class ShowProduct extends javax.swing.JFrame {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(99, 99, 99)
                                 .addComponent(AddBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,16 +332,17 @@ public class ShowProduct extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(clearBillBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(67, 67, 67))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(allPaymentVar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
+                        .addGap(100, 100, 100)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(allPaymentVar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(allPaymentVar2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(totalMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cashVar)
                             .addComponent(cardVar))
@@ -368,7 +384,7 @@ public class ShowProduct extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(321, 321, 321)
+                .addGap(464, 464, 464)
                 .addComponent(welcomeUser)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9)
@@ -376,9 +392,9 @@ public class ShowProduct extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addGap(51, 51, 51)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addContainerGap(83, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(487, 487, 487)
@@ -393,7 +409,7 @@ public class ShowProduct extends javax.swing.JFrame {
                     .addComponent(welcomeUser))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -409,7 +425,7 @@ public class ShowProduct extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1212, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -422,7 +438,7 @@ public class ShowProduct extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     class CellRenderer implements TableCellRenderer {
-
+        
         @Override
         public Component getTableCellRendererComponent(JTable table,
                 Object value,
@@ -430,39 +446,29 @@ public class ShowProduct extends javax.swing.JFrame {
                 boolean hasFocus,
                 int row,
                 int column) {
-
+            
             TableColumn tb = ProductTable.getColumn("Image");
             tb.setMaxWidth(60);
             tb.setMinWidth(60);
-
+            
             ProductTable.setRowHeight(60);
-
+            
             return (Component) value;
         }
-
+        
     }
 
     private void cashVarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cashVarActionPerformed
         // TODO add your handling code here:
-        // confirm pay to cash
-//        if (cashVar.isSelected() == true){
-//            cashAndCard = true;
-//        }
-    }//GEN-LAST:event_cashVarActionPerformed
-//    private String getReceiptID() throws SQLException{
-//        
-//    }
-    private void confirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmBtnMouseClicked
-        //show a dialog or notification
-//        Connection connection = ConnectionDatabase.getConnection();
 
+    }//GEN-LAST:event_cashVarActionPerformed
+
+    private void confirmBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmBtnMouseClicked
+
+        Congrats congrats = new Congrats();
+        congrats.setVisible(true);
 
     }//GEN-LAST:event_confirmBtnMouseClicked
-
-    private void clearBillBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clearBillBtnMouseClicked
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_clearBillBtnMouseClicked
 
     private void AddBtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AddBtnMouseClicked
         // TODO add your handling code here:
@@ -477,8 +483,22 @@ public class ShowProduct extends javax.swing.JFrame {
         int foodId = OrderHandler.getFoodIdByName(nameFood);
         int quantity = (int) quantityVar.getValue();
         System.out.println("orderId: " + this.orderId + ", foodId: " + foodId + ", quantity: " + quantity);
-        OrderHandler.insertOneProduct(foodId, orderId, quantity);
-        show_buy_product();
+        try {
+            socketFunction.sendOneFood(foodId, orderId, quantity);
+            socketFunction.getTotalMoney(orderId);
+//        OrderHandler.insertOneProduct(foodId, orderId, quantity);
+
+        } catch (IOException ex) {
+            Logger.getLogger(ShowProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            show_buy_product();
+            showMoney();
+        } catch (IOException ex) {
+            Logger.getLogger(ShowProduct.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_AddBtnMouseClicked
 
     private void ProductTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ProductTableMouseClicked
@@ -512,9 +532,21 @@ public class ShowProduct extends javax.swing.JFrame {
 //        welcomeUser.setText("Welcome " + );
     }//GEN-LAST:event_welcomeUserInputMethodTextChanged
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 12e5cb3 (final ver 2)
     private void clearTable(){
         ((DefaultTableModel)ProductTable.getModel()).setNumRows(0);
     }      
+
+    private void cardVarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cardVarMouseClicked
+        // TODO add your handling code here:
+        PaymentByCard paymen = new PaymentByCard(orderId, socketFunction);
+        paymen.setVisible(true);
+    }//GEN-LAST:event_cardVarMouseClicked
+    
+
     
     private BufferedImage showIMG(String url) {
         BufferedImage img = null;
@@ -525,14 +557,15 @@ public class ShowProduct extends javax.swing.JFrame {
         }
         return img;
     }
-    private void show_menu(){
+    
+    private void show_menu() {
         ArrayList<Food> listFood = FoodHandler.getAllMenu();
-        DefaultTableModel model = (DefaultTableModel)ProductTable.getModel();
+        DefaultTableModel model = (DefaultTableModel) ProductTable.getModel();
         Object[] newIdentifiers = new Object[]{"Id", "Name", "Discription", "Price", "Image"};
         ProductTable.setFillsViewportHeight(true);
         ProductTable.getColumn("Image").setCellRenderer(new CellRenderer());
-
-        for(int i = 0; i < listFood.size(); i++){
+        
+        for (int i = 0; i < listFood.size(); i++) {
             newIdentifiers[0] = listFood.get(i).getFoodId();
             newIdentifiers[1] = listFood.get(i).getFoodName();
             newIdentifiers[2] = listFood.get(i).getFoodDescription();
@@ -540,108 +573,59 @@ public class ShowProduct extends javax.swing.JFrame {
             JLabel imageLabel = new JLabel();
             ImageIcon imageicon = new ImageIcon(listFood.get(i).getFoodUrlIMG());
             Image img = imageicon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-            System.out.println(">>>>> "+ listFood.get(i).getFoodUrlIMG());
+//            System.out.println(">>>>> "+ listFood.get(i).getFoodUrlIMG());
             imageLabel.setIcon(new ImageIcon(img));
             newIdentifiers[4] = imageLabel;
             
-       
             model.addRow(newIdentifiers);
         }
-
+<<<<<<< HEAD
+=======
     }
+>>>>>>> 12e5cb3 (final ver 2)
 
-    private void show_buy_product() {
-        ArrayList<BuyProduct> listBuyProduct = FoodOrderHandler.getAllFoodOrder(orderId);
+    public void showMoney() throws IOException {
+        String total = socketFunction.getTotalMoney(orderId);
+        System.out.println("total client: " + total);
+        totalMoney.setText(total);
+    }
+    
+    private void show_buy_product() throws IOException {
+        System.out.println("haha cho tien");
+        String result = socketFunction.getAllFoodorder(orderId);
+        System.out.println(result);
+        String[] listProducts = result.split(" ");
+        ArrayList<BuyProduct> listBuyProduct = new ArrayList<>();
+        
+        for (String a : listProducts) {
+            System.out.println(a);
+            Gson gson = new Gson();
+            BuyProduct tmp = gson.fromJson(a, BuyProduct.class);
+            System.out.println(tmp.getName() + " | " + tmp.getCost() + " | " + tmp.getQuantity());
+            listBuyProduct.add(tmp);
+        }
+        
         DefaultTableModel model = (DefaultTableModel) FoodOrderTable.getModel();
         model.setRowCount(0);
         Object[] row = new Object[3];
-
+        
         for (int i = 0; i < listBuyProduct.size(); i++) {
             row[0] = listBuyProduct.get(i).getName();
             row[1] = listBuyProduct.get(i).getCost();
             row[2] = listBuyProduct.get(i).getQuantity();
             model.addRow(row);
         }
+
     }
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-//            new ShowProduct().setVisible(true);
-        });
-    }
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(ShowProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(ShowProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(ShowProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(ShowProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    new ShowProduct().setVisible(true);
-//                } catch (IOException ex) {
-//                    Logger.getLogger(ShowProduct.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        });   
-//    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddBtn;
     private javax.swing.JTable FoodOrderTable;
     private javax.swing.JTable ProductTable;
     private javax.swing.JLabel allPaymentVar;
+    private javax.swing.JLabel allPaymentVar2;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton cardVar;
     private javax.swing.JRadioButton cashVar;
-    private javax.swing.JButton clearBillBtn;
     private javax.swing.JButton confirmBtn;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -658,6 +642,7 @@ public class ShowProduct extends javax.swing.JFrame {
     private javax.swing.JTextField nameVar;
     private javax.swing.JTextField priceVar;
     private javax.swing.JSpinner quantityVar;
+    private javax.swing.JLabel totalMoney;
     private javax.swing.JLabel welcomeUser;
     // End of variables declaration//GEN-END:variables
 }

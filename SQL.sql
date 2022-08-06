@@ -168,3 +168,5 @@ select * from [Order]
 select * from [User]
 
 delete from food where foodId = 2
+
+select totalMoney from [Order] where orderId = 63;

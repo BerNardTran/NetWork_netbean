@@ -57,48 +57,63 @@ public class Server {
             this.clientSocket = socket;
         }
 
-        
-
         @Override
         public void run() {
-            PrintWriter out = null;
-            BufferedReader in = null;
-            StringBuilder stringBuilder = new StringBuilder();
-//            Gson gson = new Gson();
-            try {
-                out = new PrintWriter(clientSocket.getOutputStream(), true);
-                in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-//                String firstline = in.readLine(); //get name
-////                String line;
-////                while ((line = in.readLine()) != null){
-////                    stringBuilder.append(line);
-////                }
-////                String result = stringBuilder.toString();
-//                FormatData formatData = gson.fromJson(firstline, FormatData.class);
-////                System.out.println("CLIENT: " + formatData.name + ", " + formatData.foodId + ", " + formatData.orderId + ", " + formatData.quantity);
-//                System.out.println("CLIENT: " + formatData.name + " joined!");
-                String data = in.readLine();
-                int splitIndex = data.indexOf("|");
-                int dataLength = data.length();
-                String command = data.substring(0,splitIndex);
-                String commandData = data.substring(splitIndex+1,dataLength);
-                String response = "";
-                if("checkedUserExist".equals(command)){
-                    String userName = commandData;
-                    int userid = UserHandle.checkedUserExist(userName);
-                    int orderId = 0;
-                    if (userid != 0) {
-                        OrderHandle.CreateOrder(userid);
-                        orderId = OrderHandle.GetOrder(userid);
-                    }
-                    response = userid + "|" + orderId;
-                    out.println(response);
-                }
-                
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+//            Gson gson = new Gson();
+            while (true) {
+                PrintWriter out = null;
+                BufferedReader in = null;
+                StringBuilder stringBuilder = new StringBuilder();
+                try {
+                    out = new PrintWriter(clientSocket.getOutputStream(), true);
+                    in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    while (true) {
+                        String data = in.readLine();
+                        System.out.println("data: " + data);
+                        int splitIndex = data.indexOf("|");
+                        int dataLength = data.length();
+                        String command = data.substring(0, splitIndex);
+                        String commandData = data.substring(splitIndex + 1, dataLength);
+
+                        if ("checkedUserExist".equals(command)) {
+                            String response = "";
+                            String userName = commandData;
+                            int userid = UserHandle.checkedUserExist(userName);
+                            int orderId = 0;
+                            if (userid != 0) {
+                                OrderHandle.CreateOrder(userid);
+                                orderId = OrderHandle.GetOrder(userid);
+                            }
+                            response = userid + "|" + orderId;
+                            out.println(response);
+                        }
+                        System.out.println("command: " + commandData);
+                        if ("sendOneFood".equals(command)) {
+                            OrderHandle.insertOrder(commandData);
+                            out.println("true");
+                        }
+                        if("getAllFood".equals(command)){
+                            String result = OrderHandler.getAllFoodOrder(Integer.valueOf(commandData));
+                            out.println(result);
+                        }
+                        if("getTotalMoney".equals(command)){
+                            float result = OrderHandler.getAllMoney(Integer.valueOf(commandData));
+                            System.out.println(">>>> total: " + result);
+                            out.println(result);
+                        }
+                        if("checkedStatus".equals(command)){
+                            boolean check = OrderHandler.checkedStatusPaymentCard(commandData);
+                            System.out.println(">>>>> check: " + check);
+                            out.println(check);
+                        }
+                    }
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
+
         }
     }
 

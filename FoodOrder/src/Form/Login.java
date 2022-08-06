@@ -199,11 +199,10 @@ public class Login extends javax.swing.JFrame {
             String orderIdString = response.substring(splitIndex + 1, dataLength);
             int userId = Integer.valueOf(userIdString);
             int orderId = Integer.valueOf(orderIdString);
-            formatData.orderId = orderId;
-            formatData.userId = userId;
+
             System.out.println("orderId of login " + orderId + " || userId : " + userId);
             if (userId != 0 && orderId != 0) {
-                ShowProduct product = new ShowProduct(orderId);
+                ShowProduct product = new ShowProduct(orderId, socketFuntion);
                 product.setVisible(true);
             }
 //        UserHandler.insertUserName(user);

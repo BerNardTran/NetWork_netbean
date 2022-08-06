@@ -30,7 +30,7 @@ public class OrderHandle {
     public static int GetOrder(int userId) {
         Connection connection = null;
         connection = ConnectionDatabase.getConnection();
-        String sqlQuery = "  select * from [Order] where userId = '" + userId + "' and orderId = (select max(orderId) from [order] where userId = '" + userId +"')" ;
+        String sqlQuery = "  select * from [Order] where userId = '" + userId + "' and orderId = (select max(orderId) from [order] where userId = '" + userId + "')";
         int orderId = 0;
         try {
             Statement statement = connection.createStatement();
@@ -43,4 +43,17 @@ public class OrderHandle {
         }
         return orderId;
     }
+
+    public static void insertOrder(String sql) {
+        Connection connection = null;
+        connection = ConnectionDatabase.getConnection();
+        System.out.println(sql);
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeQuery(sql);
+        } catch (Exception e) {
+            System.out.println("Can't insert to database");
+        }
+    }
+    
 }
