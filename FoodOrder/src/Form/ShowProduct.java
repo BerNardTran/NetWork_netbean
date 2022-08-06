@@ -40,10 +40,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
+
 
 /**
  *
@@ -532,10 +530,9 @@ public class ShowProduct extends javax.swing.JFrame {
 //        welcomeUser.setText("Welcome " + );
     }//GEN-LAST:event_welcomeUserInputMethodTextChanged
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 12e5cb3 (final ver 2)
+
+
     private void clearTable(){
         ((DefaultTableModel)ProductTable.getModel()).setNumRows(0);
     }      
@@ -579,10 +576,8 @@ public class ShowProduct extends javax.swing.JFrame {
             
             model.addRow(newIdentifiers);
         }
-<<<<<<< HEAD
-=======
+
     }
->>>>>>> 12e5cb3 (final ver 2)
 
     public void showMoney() throws IOException {
         String total = socketFunction.getTotalMoney(orderId);
