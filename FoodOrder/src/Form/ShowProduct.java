@@ -60,7 +60,6 @@ public class ShowProduct extends javax.swing.JFrame {
         this.orderId = orderId;
         this.socketFunction = socketFunction;
         initComponents();
-        System.out.println("cac: " + orderId);
         show_menu();
 //        show_buy_product();
 //        populateJTable(new QueryForProduct().BindTable(user, pass));
@@ -90,7 +89,6 @@ public class ShowProduct extends javax.swing.JFrame {
         AddBtn = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         FoodOrderTable = new javax.swing.JTable();
-        allPaymentVar = new javax.swing.JLabel();
         confirmBtn = new javax.swing.JButton();
         quantityVar = new javax.swing.JSpinner();
         cardVar = new javax.swing.JRadioButton();
@@ -189,10 +187,6 @@ public class ShowProduct extends javax.swing.JFrame {
         ));
         jScrollPane4.setViewportView(FoodOrderTable);
 
-        allPaymentVar.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        allPaymentVar.setForeground(new java.awt.Color(153, 153, 255));
-        allPaymentVar.setText("vnd");
-
         confirmBtn.setBackground(new java.awt.Color(0, 204, 51));
         confirmBtn.setText("Confirm");
         confirmBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -266,9 +260,7 @@ public class ShowProduct extends javax.swing.JFrame {
                         .addComponent(allPaymentVar2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(totalMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(allPaymentVar, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addGap(96, 96, 96))))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -330,7 +322,6 @@ public class ShowProduct extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(allPaymentVar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(allPaymentVar2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(totalMoney, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
@@ -587,11 +578,10 @@ public class ShowProduct extends javax.swing.JFrame {
     public void showMoney() throws IOException {
         String total = socketFunction.getTotalMoney(orderId);
         System.out.println("total client: " + total);
-        totalMoney.setText(total);
+        totalMoney.setText(total + " VND");
     }
 
     private void show_buy_product() throws IOException {
-        System.out.println("haha cho tien");
         String result = socketFunction.getAllFoodorder(orderId);
         System.out.println(result);
         String[] listProducts = result.split(" ");
@@ -621,7 +611,6 @@ public class ShowProduct extends javax.swing.JFrame {
     private javax.swing.JButton AddBtn;
     private javax.swing.JTable FoodOrderTable;
     private javax.swing.JTable ProductTable;
-    private javax.swing.JLabel allPaymentVar;
     private javax.swing.JLabel allPaymentVar2;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton cardVar;
