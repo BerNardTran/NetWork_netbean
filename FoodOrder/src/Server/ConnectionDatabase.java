@@ -21,7 +21,6 @@ public class ConnectionDatabase {
         String password = "abcd1234";
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            System.out.println("dcmmm");
             return DriverManager.getConnection(url, username, password);
 
         } catch (ClassNotFoundException ex) {

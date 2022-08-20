@@ -223,6 +223,7 @@ public class Login extends javax.swing.JFrame {
 
         String result = gson.toJson(formatData);
         System.out.println(">>>> result login: " + result);
+        this.setVisible(false);
 //        out.println(result);
     }//GEN-LAST:event_LoginBtnActionPerformed
 //    
