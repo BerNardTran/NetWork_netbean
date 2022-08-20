@@ -442,7 +442,7 @@ public class Admin extends javax.swing.JFrame {
         // TODO add your handling code here:
         int Myindex = productTable.getSelectedRow();
         int foodId = Integer.valueOf(productTable.getValueAt(Myindex, 0).toString());
-//        FoodHandler.DeleteFoodItem(foodId);
+        FoodHandler.DeleteFoodItem(foodId);
         show_menu();
     }//GEN-LAST:event_deleteBtnMouseClicked
 
